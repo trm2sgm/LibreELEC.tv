@@ -17,7 +17,7 @@
 ################################################################################
 
 PKG_NAME="libbluray"
-PKG_VERSION="0.9.2"
+PKG_VERSION="0.9.3"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
@@ -60,3 +60,10 @@ PKG_CONFIGURE_OPTS_TARGET="--disable-werror \
                            --with-fontconfig \
                            --with-libxml2 \
                            --with-gnu-ld"
+
+post_makeinstall_target() {
+  mkdir -p $SYSROOT_PREFIX/usr/include/$PKG_NAME/util
+    cp $ROOT/$PKG_BUILD/src/util/attributes.h $SYSROOT_PREFIX/usr/include/$PKG_NAME/util
+  mkdir -p $SYSROOT_PREFIX/usr/include/$PKG_NAME/bdnav
+    cp $ROOT/$PKG_BUILD/src/libbluray/bdnav/clpi_data.h $SYSROOT_PREFIX/usr/include/$PKG_NAME/bdnav
+}
