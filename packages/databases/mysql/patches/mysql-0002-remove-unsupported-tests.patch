@@ -1,0 +1,16 @@
+diff -Naur a/cmake/floating_point.cmake b/cmake/floating_point.cmake
+--- a/cmake/floating_point.cmake	2016-08-08 09:35:30.883465536 +0100
++++ b/cmake/floating_point.cmake	2016-08-08 09:35:40.463525531 +0100
+@@ -45,12 +45,4 @@
+   "${CMAKE_REQUIRED_FLAGS} -O3 -fexpensive-optimizations"
+ )
+ 
+-IF(CMAKE_COMPILER_IS_GNUCC)
+-  CHECK_C_SOURCE_RUNS("${code}" HAVE_C_FLOATING_POINT_OPTIMIZATION_PROBLEMS)
+-ENDIF()
+-
+-IF(CMAKE_COMPILER_IS_GNUCXX)
+-  CHECK_CXX_SOURCE_RUNS("${code}" HAVE_CXX_FLOATING_POINT_OPTIMIZATION_PROBLEMS)
+-ENDIF()
+-
+ SET(CMAKE_REQUIRED_FLAGS "${SAVE_CMAKE_REQUIRED_FLAGS}")
