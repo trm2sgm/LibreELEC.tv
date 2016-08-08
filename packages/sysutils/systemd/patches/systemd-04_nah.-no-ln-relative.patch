@@ -5,15 +5,15 @@ Subject: [PATCH 4/8] nah. no ln --relative
 
 pure ****
 ---
- Makefile.am  |   10 +++++-----
- configure.ac |    2 --
- 2 files changed, 5 insertions(+), 7 deletions(-)
+ Makefile.am  | 8 ++++----
+ configure.ac | 2 --
+ 2 files changed, 4 insertions(+), 6 deletions(-)
 
 diff --git a/Makefile.am b/Makefile.am
-index 36c269e..a2c2870 100644
+index bf853c8..82ff706 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -233,8 +233,8 @@ define move-to-rootlibdir
+@@ -254,8 +254,8 @@ define move-to-rootlibdir
  	if test "$(libdir)" != "$(rootlibdir)"; then \
  		$(MKDIR_P) $(DESTDIR)$(rootlibdir) && \
  		so_img_name=$$(readlink $(DESTDIR)$(libdir)/$$libname) && \
@@ -24,7 +24,7 @@ index 36c269e..a2c2870 100644
  		mv $(DESTDIR)$(libdir)/$$libname.* $(DESTDIR)$(rootlibdir); \
  	fi
  endef
-@@ -297,9 +297,9 @@ install-aliases-hook:
+@@ -312,9 +312,9 @@ install-aliases-hook:
  	set -- $(SYSTEM_UNIT_ALIASES) && \
  		dir=$(systemunitdir) && $(install-aliases)
  	set -- $(USER_UNIT_ALIASES) && \
@@ -36,28 +36,16 @@ index 36c269e..a2c2870 100644
  
  define install-aliases
  	while [ -n "$$1" ]; do \
-@@ -2536,7 +2536,7 @@ systemd_dbus1_generator_LDADD = \
- dbus1-generator-install-hook:
- 	$(AM_V_at)$(MKDIR_P) $(DESTDIR)$(usergeneratordir)
- 	$(AM_V_RM)rm -f $(DESTDIR)$(usergeneratordir)/systemd-dbus1-generator
--	$(AM_V_LN)$(LN_S) --relative -f $(DESTDIR)$(systemgeneratordir)/systemd-dbus1-generator $(DESTDIR)$(usergeneratordir)/systemd-dbus1-generator
-+	$(AM_V_LN)$(LN_S) -f $(systemgeneratordir)/systemd-dbus1-generator $(DESTDIR)$(usergeneratordir)/systemd-dbus1-generator
- 
- dbus1-generator-uninstall-hook:
- 	rm -f $(DESTDIR)$(usergeneratordir)/systemd-dbus1-generator
 diff --git a/configure.ac b/configure.ac
-index 97a29d6..c9d3305 100644
+index 4d1c966..3a544a8 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -100,8 +100,6 @@ AC_PATH_PROG([KEXEC], [kexec], [/usr/sbin/kexec], [$PATH:/usr/sbin:/sbin])
- 
- AC_PATH_PROG([SULOGIN], [sulogin], [/usr/sbin/sulogin], [$PATH:/usr/sbin:/sbin])
+@@ -110,8 +110,6 @@ AC_PATH_PROG([SULOGIN], [sulogin], [/usr/sbin/sulogin], [$PATH:/usr/sbin:/sbin])
+ AC_PATH_PROG([MOUNT_PATH], [mount], [/usr/bin/mount], [$PATH:/usr/sbin:/sbin])
+ AC_PATH_PROG([UMOUNT_PATH], [umount], [/usr/bin/umount], [$PATH:/usr/sbin:/sbin])
  
 -AS_IF([! ln --relative --help > /dev/null 2>&1], [AC_MSG_ERROR([*** ln doesn't support --relative ***])])
 -
  M4_DEFINES=
  
- # gtkdocize greps for '^GTK_DOC_CHECK', so it needs to be on its own line
--- 
-1.7.10.4
-
+ AC_CHECK_TOOL(OBJCOPY, objcopy)
