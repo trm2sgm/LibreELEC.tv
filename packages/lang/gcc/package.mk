@@ -17,7 +17,7 @@
 ################################################################################
 
 PKG_NAME="gcc"
-PKG_VERSION="5.4.0"
+PKG_VERSION="6.1.0"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
@@ -53,6 +53,7 @@ BOOTSTRAP_CONFIGURE_OPTS="--host=$HOST_NAME \
                           --disable-libatomic \
                           --disable-libitm \
                           --disable-libsanitizer \
+                          --disable-libmpx \
                           --enable-gold \
                           --enable-ld=default \
                           --enable-plugin \
@@ -90,6 +91,7 @@ PKG_CONFIGURE_OPTS_HOST="--target=$TARGET_NAME \
                          --disable-multilib \
                          --disable-libatomic \
                          --disable-libitm \
+                         --disable-libmpx \
                          --enable-gold \
                          --enable-ld=default \
                          --enable-plugin \
