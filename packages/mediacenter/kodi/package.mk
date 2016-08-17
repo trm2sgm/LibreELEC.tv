@@ -415,6 +415,11 @@ post_makeinstall_target() {
     else
       cp $PKG_DIR/config/appliance.xml $INSTALL/usr/share/kodi/system/settings
     fi
+    if [ -f $PROJECT_DIR/$PROJECT/kodi/appliance_hardware_*.xml ]; then
+      cp $PROJECT_DIR/$PROJECT/kodi/appliance_hardware_*.xml $INSTALL/usr/share/kodi/system/settings
+    else
+      cp $PKG_DIR/config/appliance_hardware_*.xml $INSTALL/usr/share/kodi/system/settings
+    fi
 
   # update addon manifest
   ADDON_MANIFEST=$INSTALL/usr/share/kodi/system/addon-manifest.xml

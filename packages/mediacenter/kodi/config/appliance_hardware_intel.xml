@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<settings>
+  <!-- Intel GPU specific settings -->
+  <section id="player">
+    <category id="videoplayer">
+      <group id="3">
+        <setting id="videoplayer.usevaapi">
+          <default>true</default>
+        </setting>
+        <setting id="videoplayer.usevdpau">
+          <default>false</default>
+        </setting>
+      </group>
+    </category>
+  </section>
+
+  <section id="system">
+    <category id="display">
+      <group id="1">
+        <setting id="videoscreen.limitedrange">
+          <default>true</default>
+        </setting>
+      </group>
+    </category>
+  </section>
+
+</settings>

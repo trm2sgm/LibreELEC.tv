@@ -1,0 +1,26 @@
+From 856f0cc2890179970a72a1cb6881c022b2dd67c8 Mon Sep 17 00:00:00 2001
+From: MilhouseVH <milhouseVH.github@nmacleod.com>
+Date: Wed, 17 Aug 2016 01:42:25 +0100
+Subject: [PATCH] Support hardware specific settings in LibreELEC
+
+---
+ xbmc/settings/Settings.cpp | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/xbmc/settings/Settings.cpp b/xbmc/settings/Settings.cpp
+index 3444a13..ab73554 100644
+--- a/xbmc/settings/Settings.cpp
++++ b/xbmc/settings/Settings.cpp
+@@ -841,6 +841,9 @@ bool CSettings::InitializeDefinitions()
+   if (CFile::Exists(SETTINGS_XML_FOLDER "appliance.xml") && !Initialize(SETTINGS_XML_FOLDER "appliance.xml"))
+     CLog::Log(LOGFATAL, "Unable to load appliance-specific settings definitions");
+ 
++  if (CFile::Exists("/storage/.cache/appliance_hardware.xml") && !Initialize("/storage/.cache/appliance_hardware.xml"))
++    CLog::Log(LOGFATAL, "Unable to load appliance-specific hardware settings definitions");
++
+   return true;
+ }
+ 
+-- 
+2.7.4
+

@@ -17,10 +17,21 @@
 #  along with OpenELEC.  If not, see <http://www.gnu.org/licenses/>.
 ################################################################################
 
+function gethardware()
+{
+  local fb
+  fb="$(grep '^0 ' /proc/fb | sed 's/[^[:space:]] //')"
+  case "${fb}" in
+    inteldrmfb)  echo "intel";;
+    radeondrmfb) echo "amd";;
+    BCM27*)      echo "rpi";;
+    *)           echo "unknown";;
+  esac
+}
 
 # hack: make addon-bins executable
 # done in kodi on addon install. but just in case..
-chmod +x /storage/.kodi/addons/*/bin/*
+chmod +x /storage/.kodi/addons/*/bin/* 2>/dev/null
 
 # hack: update RSSnews.xml in userdata
 if [ -f /storage/.kodi/userdata/RssFeeds.xml ]; then
@@ -41,6 +52,16 @@ if [ ! -f $HOME/.kodi/userdata/guisettings.xml ] ; then
     cp /usr/share/kodi/config/guisettings.xml $HOME/.kodi/userdata
   fi
 fi
+
+# configure any hardware specific settings file
+hardware=$(gethardware)
+echo "Detected hardware is [${hardware}]"
+if [ -f /usr/share/kodi/system/settings/appliance_hardware_${hardware}.xml ]; then
+  cp /usr/share/kodi/system/settings/appliance_hardware_${hardware}.xml /storage/.cache/appliance_hardware.xml
+else
+  rm -f /storage/.cache/appliance_hardware.xml
+fi
+
 
 if [ -e /run/lirc/lircd.irtrans ]; then
   KODI_ARGS="--lircdev /run/lirc/lircd.irtrans"

@@ -36,6 +36,20 @@
     </category>
   </section>
 
+  <!-- configure defaults, that may or may not be overridden by a hardware specific settings file -->
+  <section id="player">
+    <category id="videoplayer">
+      <group id="3">
+        <setting id="videoplayer.usevaapi">
+          <default>false</default>
+        </setting>
+        <setting id="videoplayer.usevdpau">
+          <default>true</default>
+        </setting>
+      </group>
+    </category>
+  </section>
+
   <section id="services">
     <category id="airplay">
       <group id="1">
