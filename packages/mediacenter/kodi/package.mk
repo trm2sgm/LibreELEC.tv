@@ -42,41 +42,43 @@ PKG_AUTORECONF="no"
 if [ "$DISPLAYSERVER" = "x11" ]; then
 # for libX11 support
   PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET libX11 libXext libdrm libXrandr"
-  KODI_XORG="--enable-x11"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_X11=ON"
 else
-  KODI_XORG="--disable-x11"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_X11=OFF"
 fi
 
 if [ ! "$OPENGL" = "no" ]; then
 # for OpenGL (GLX) support
   PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET $OPENGL glu"
-  KODI_OPENGL="--enable-gl"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_OPENGL=ON"
 else
-  KODI_OPENGL="--disable-gl"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_OPENGL=OFF"
 fi
 
 if [ "$OPENGLES_SUPPORT" = yes ]; then
 # for OpenGL-ES support
   PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET $OPENGLES"
-  KODI_OPENGLES="--enable-gles"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_OPENGLES=ON"
 else
-  KODI_OPENGLES="--disable-gles"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_OPENGLES=OFF"
 fi
 
 if [ "$ALSA_SUPPORT" = yes ]; then
 # for ALSA support
   PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET alsa-lib"
-  KODI_ALSA="--enable-alsa"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_ALSA=ON"
 else
-  KODI_ALSA="--disable-alsa"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_ALSA=OFF"
 fi
 
 if [ "$PULSEAUDIO_SUPPORT" = yes ]; then
 # for PulseAudio support
-  PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET pulseaudio"
-  KODI_PULSEAUDIO="--enable-pulse"
+#FIX
+#  PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET pulseaudio"
+#  KODI_CONFIG="$KODI_CONFIG -DENABLE_PULSEAUDIO=ON"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_PULSEAUDIO=OFF"
 else
-  KODI_PULSEAUDIO="--disable-pulse"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_PULSEAUDIO=OFF"
 fi
 
 if [ "$ESPEAK_SUPPORT" = yes ]; then
@@ -87,139 +89,141 @@ fi
 if [ "$CEC_SUPPORT" = yes ]; then
 # for CEC support
   PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET libcec"
-  KODI_CEC="--enable-libcec"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_CEC=ON"
 else
-  KODI_CEC="--disable-libcec"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_CEC=OFF"
 fi
 
 if [ "$JOYSTICK_SUPPORT" = yes ]; then
 # for Joystick support
-  PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET SDL2"
-  KODI_JOYSTICK="--enable-joystick"
+#FIX
+#  PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET SDL2"
+#  KODI_CONFIG="$KODI_CONFIG -DENABLE_SDL=ON"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_SDL=OFF"
 else
-  KODI_JOYSTICK="--disable-joystick"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_SDL=OFF"
 fi
 
 if [ "$KODI_OPTICAL_SUPPORT" = yes ]; then
-  KODI_OPTICAL="--enable-optical-drive"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_OPTICAL=ON"
 else
-  KODI_OPTICAL="--disable-optical-drive"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_OPTICAL=OFF"
 fi
 
 if [ "$KODI_NONFREE_SUPPORT" = yes ]; then
 # for non-free support
-  KODI_NONFREE="--enable-non-free"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_NONFREE=ON"
 else
-  KODI_NONFREE="--disable-non-free"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_NONFREE=OFF"
 fi
 
 if [ "$KODI_DVDCSS_SUPPORT" = yes ]; then
-  KODI_DVDCSS="--enable-dvdcss"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_DVDCSS=ON"
 else
-  KODI_DVDCSS="--disable-dvdcss"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_DVDCSS=OFF"
 fi
 
 if [ "$KODI_BLURAY_SUPPORT" = yes ]; then
   PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET libbluray"
-  KODI_BLURAY="--enable-libbluray"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_BLURAY=ON"
 else
-  KODI_BLURAY="--disable-libbluray"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_BLURAY=OFF"
 fi
 
 if [ "$AVAHI_DAEMON" = yes ]; then
   PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET avahi nss-mdns"
-  KODI_AVAHI="--enable-avahi"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_AVAHI=ON"
 else
-  KODI_AVAHI="--disable-avahi"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_AVAHI=OFF"
 fi
 
 if [ "$KODI_MYSQL_SUPPORT" = yes ]; then
   PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET mysql"
-  KODI_MYSQL="--enable-mysql"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_MYSQLCLIENT=ON"
 else
-  KODI_MYSQL="--disable-mysql"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_MYSQLCLIENT=OFF"
 fi
 
 if [ "$KODI_AIRPLAY_SUPPORT" = yes ]; then
   PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET libplist"
-  KODI_AIRPLAY="--enable-airplay"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_PLIST=ON"
 else
-  KODI_AIRPLAY="--disable-airplay"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_PLIST=OFF"
 fi
 
 if [ "$KODI_AIRTUNES_SUPPORT" = yes ]; then
   PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET libshairplay"
-  KODI_AIRTUNES="--enable-airtunes"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_AIRTUNES=ON"
 else
-  KODI_AIRTUNES="--disable-airtunes"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_AIRTUNES=OFF"
 fi
 
 if [ "$KODI_NFS_SUPPORT" = yes ]; then
   PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET libnfs"
-  KODI_NFS="--enable-nfs"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_NFS=ON"
 else
-  KODI_NFS="--disable-nfs"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_NFS=OFF"
 fi
 
 if [ "$KODI_SAMBA_SUPPORT" = yes ]; then
   PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET samba"
-  KODI_SAMBA="--enable-samba"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_SMBCLIENT=ON"
 else
-  KODI_SAMBA="--disable-samba"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_SMBCLIENT=OFF"
 fi
 
 if [ "$KODI_WEBSERVER_SUPPORT" = yes ]; then
   PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET libmicrohttpd"
-  KODI_WEBSERVER="--enable-webserver"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_MICROHTTPD=ON"
 else
-  KODI_WEBSERVER="--disable-webserver"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_MICROHTTPD=OFF"
 fi
 
 if [ "$KODI_UPNP_SUPPORT" = yes ]; then
-  KODI_UPNP="--enable-upnp"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_UPNP=ON"
 else
-  KODI_UPNP="--disable-upnp"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_UPNP=OFF"
 fi
 
 if [ "$KODI_SSHLIB_SUPPORT" = yes ]; then
   PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET libssh"
-  KODI_SSH="--enable-ssh"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_SSH=ON"
 else
-  KODI_SSH="--disable-ssh"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_SSH=OFF"
 fi
 
 if [ ! "$KODIPLAYER_DRIVER" = default ]; then
   PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET $KODIPLAYER_DRIVER"
 
   if [ "$KODIPLAYER_DRIVER" = bcm2835-driver ]; then
-    KODI_OPENMAX="--enable-openmax"
-    KODI_PLAYER="--enable-player=omxplayer"
-    KODI_CODEC="--with-platform=raspberry-pi"
+    KODI_CONFIG="$KODI_CONFIG -DENABLE_OPENMAX=ON"
+#    KODI_PLAYER="--enable-player=omxplayer"
+#    KODI_CODEC="--with-platform=raspberry-pi"
     BCM2835_INCLUDES="-I$SYSROOT_PREFIX/usr/include/interface/vcos/pthreads/ \
                       -I$SYSROOT_PREFIX/usr/include/interface/vmcs_host/linux"
     KODI_CFLAGS="$KODI_CFLAGS $BCM2835_INCLUDES"
     KODI_CXXFLAGS="$KODI_CXXFLAGS $BCM2835_INCLUDES"
   elif [ "$KODIPLAYER_DRIVER" = libfslvpuwrap ]; then
-    KODI_CODEC="--enable-codec=imxvpu"
+    KODI_CONFIG="$KODI_CONFIG -DENABLE_IMX=ON"
   elif [ "$KODIPLAYER_DRIVER" = libamcodec ]; then
-    KODI_CODEC="--enable-codec=amcodec"
+    KODI_CONFIG="$KODI_CONFIG -DENABLE_AML=ON"
   else
-    KODI_OPENMAX="--disable-openmax"
+    KODI_CONFIG="$KODI_CONFIG -DENABLE_OPENMAX=ON"
   fi
 fi
 
 if [ "$VDPAU_SUPPORT" = "yes" -a "$DISPLAYSERVER" = "x11" ]; then
   PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET libvdpau"
-  KODI_VDPAU="--enable-vdpau"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_VDPAU=ON"
 else
-  KODI_VDPAU="--disable-vdpau"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_VDPAU=OFF"
 fi
 
 if [ "$VAAPI_SUPPORT" = yes ]; then
   PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET libva-intel-driver"
-  KODI_VAAPI="--enable-vaapi"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_VAAPI=ON"
 else
-  KODI_VAAPI="--disable-vaapi"
+  KODI_CONFIG="$KODI_CONFIG -DENABLE_VAAPI=OFF"
 fi
 
 export CXX_FOR_BUILD="$HOST_CXX"
@@ -233,118 +237,55 @@ export PYTHON_CPPFLAGS="-I$SYSROOT_PREFIX/usr/include/python$PYTHON_VERSION"
 export PYTHON_LDFLAGS="-L$SYSROOT_PREFIX/usr/lib/python$PYTHON_VERSION -lpython$PYTHON_VERSION"
 export PYTHON_SITE_PKG="$SYSROOT_PREFIX/usr/lib/python$PYTHON_VERSION/site-packages"
 
-PKG_CONFIGURE_OPTS_TARGET="gl_cv_func_gettimeofday_clobber=no \
-                           ac_python_version=$PYTHON_VERSION \
-                           --disable-libbluetooth \
-                           --disable-debug \
-                           --disable-optimizations \
-                           $KODI_OPENGL \
-                           $KODI_OPENGLES \
-                           $KODI_OPENMAX \
-                           $KODI_VDPAU \
-                           $KODI_VAAPI \
-                           --disable-vtbdecoder \
-                           --disable-tegra \
-                           --disable-profiling \
-                           $KODI_JOYSTICK \
-                           $KODI_CEC \
-                           --enable-udev \
-                           --disable-libusb \
-                           $KODI_XORG \
-                           --disable-ccache \
-                           $KODI_ALSA \
-                           $KODI_PULSEAUDIO \
-                           $KODI_SAMBA \
-                           $KODI_NFS \
-                           --disable-libcap \
-                           $KODI_DVDCSS \
-                           --disable-mid \
-                           $KODI_AVAHI \
-                           $KODI_UPNP \
-                           $KODI_MYSQL \
-                           $KODI_SSH \
-                           $KODI_AIRPLAY \
-                           $KODI_AIRTUNES \
-                           --enable-gif \
-                           $KODI_NONFREE \
-                           --disable-asap-codec \
-                           $KODI_WEBSERVER \
-                           $KODI_OPTICAL \
-                           $KODI_BLURAY \
-                           --enable-texturepacker \
-                           --with-ffmpeg=shared \
-                           $KODI_CODEC \
-                           $KODI_PLAYER"
-
 pre_configure_host() {
 # kodi fails to build in subdirs
   rm -rf $ROOT/$PKG_BUILD/.$HOST_NAME
 }
 
 configure_host() {
-  : # not needed
-}
-
-make_host() {
   mkdir -p $ROOT/$PKG_BUILD/tools/depends/native/JsonSchemaBuilder/bin && cd $_
-  cmake -DCMAKE_TOOLCHAIN_FILE=$CMAKE_CONF \
-        -DCMAKE_INSTALL_PREFIX=/usr \
-        ..
+  $CMAKE ..
   make
+
   mkdir -p $ROOT/$PKG_BUILD/tools/depends/native/TexturePacker/bin && cd $_
-  cmake -DCMAKE_TOOLCHAIN_FILE=$CMAKE_CONF \
-        -DCMAKE_INSTALL_PREFIX=/usr \
-        -DCORE_SOURCE_DIR=$ROOT/$PKG_BUILD \
-        -DCMAKE_CXX_FLAGS="-std=c++11 -DTARGET_POSIX -DTARGET_LINUX -D_LINUX -I$ROOT/$PKG_BUILD/xbmc/linux" \
-        ..
-  make
+  $CMAKE -DCORE_SOURCE_DIR=$ROOT/$PKG_BUILD \
+         -DCMAKE_CXX_FLAGS="-std=c++11 -DTARGET_POSIX -DTARGET_LINUX -D_LINUX -I$ROOT/$PKG_BUILD/xbmc/linux" \
+         ..
 }
 
 makeinstall_host() {
+  cp -P $ROOT/$PKG_BUILD/tools/depends/native/JsonSchemaBuilder/bin/JsonSchemaBuilder $ROOT/$TOOLCHAIN/bin
   cp -P $ROOT/$PKG_BUILD/tools/depends/native/TexturePacker/bin/TexturePacker $ROOT/$TOOLCHAIN/bin
 }
 
-pre_build_target() {
-# adding fake Makefile for stripped skin
-  mkdir -p $ROOT/$PKG_BUILD/addons/skin.estuary/media
-  touch $ROOT/$PKG_BUILD/addons/skin.estuary/media/Makefile.in
-}
+#pre_build_target() {
+## adding fake Makefile for stripped skin
+#  mkdir -p $ROOT/$PKG_BUILD/addons/skin.estuary/media
+#  touch $ROOT/$PKG_BUILD/addons/skin.estuary/media/Makefile.in
+#}
 
 pre_configure_target() {
-# kodi fails to build in subdirs
-  rm -rf $ROOT/$PKG_BUILD/.$TARGET_NAME
-
-# kodi should never be built with lto
-  strip_lto
-
-  export CFLAGS="$CFLAGS $KODI_CFLAGS"
-  export CXXFLAGS="$CXXFLAGS $KODI_CXXFLAGS"
-  export LIBS="$LIBS -lz"
-
-  export JSON_BUILDER=$ROOT/$TOOLCHAIN/bin/JsonSchemaBuilder
-
-# libdvd
-  cp -P $PKG_DIR/libdvd/libdvd-makefile.in $ROOT/$PKG_BUILD/lib/libdvd/Makefile.in
-  export DVD_PREFIX="$SYSROOT_PREFIX"
-
-# autoreconf
-  BOOTSTRAP_STANDALONE=1 make -f $ROOT/$PKG_BUILD/bootstrap.mk
+  mkdir -p $ROOT/$PKG_BUILD/$TARGET && cd $_
 }
 
-make_target() {
-# setup skin dir from default skin
-  SKIN_DIR="skin.`tolower $SKIN_DEFAULT`"
+configure_target() {
+  $CMAKE -DNATIVEPREFIX="$TOOLCHAIN" \
+         -DWITH_ARCH="$TARGET_ARCH" \
+         -DDEPENDS_PATH="$ROOT/$PKG_BUILD/$TARGET/depends" \
+         -DPYTHON_INCLUDE_DIRS="$SYSROOT_PREFIX/usr/include/python2.7" \
+         -DENABLE_INTERNAL_FFMPEG=OFF -DFFMPEG_INCLUDE_DIRS="$SYSROOT_PREFIX/usr" \
+         -DENABLE_LDGOLD=OFF \
+         -DENABLE_INTERNAL_CROSSGUID=OFF \
+         -DENABLE_OPENSSL=ON \
+         -DENABLE_LIRC=ON \
+         -DENABLE_EVENTCLIENTS=ON \
+         -DENABLE_UDEV=ON \
+         -DENABLE_LIBUSB=OFF \
+         -DENABLE_CCACHE=OFF \
+         -DENABLE_BLUETOOTH=OFF \ #FIX
+         $KODI_CONFIG \
+         ../project/cmake
 
-# setup default skin inside the sources
-  sed -i -e "s|skin.estuary|$SKIN_DIR|g" $ROOT/$PKG_BUILD/xbmc/system.h
-  sed -i -e "s|skin.estuary|$SKIN_DIR|g" $ROOT/$PKG_BUILD/system/settings/settings.xml
-
-  make externals
-  make kodi.bin
-
-  if [ "$DISPLAYSERVER" = "x11" ]; then
-    make kodi-xrandr
-  fi
 }
 
 post_makeinstall_target() {

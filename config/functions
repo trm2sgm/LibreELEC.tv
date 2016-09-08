@@ -29,6 +29,7 @@ setup_toolchain() {
 
   # set CMAKE configfile for target
     export CMAKE_CONF=$ROOT/$TOOLCHAIN/etc/cmake-$TARGET_NAME.conf
+    export CMAKE="cmake -DCMAKE_TOOLCHAIN_FILE=$CMAKE_CONF -DCMAKE_INSTALL_PREFIX=/usr"
 
   elif [ "$1" = host ]; then
     export DESTIMAGE="host"
@@ -55,6 +56,7 @@ setup_toolchain() {
 
   # set CMAKE configfile for host
     export CMAKE_CONF=$ROOT/$TOOLCHAIN/etc/cmake-$HOST_NAME.conf
+    export CMAKE="cmake -DCMAKE_TOOLCHAIN_FILE=$CMAKE_CONF -DCMAKE_INSTALL_PREFIX=$TOOLCHAIN"
 
   fi
 }
