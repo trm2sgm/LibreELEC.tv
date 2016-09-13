@@ -1,0 +1,73 @@
+#!/bin/bash
+################################################################################
+#      This file is part of LibreELEC - http://www.libreelec.tv
+#      Copyright (C) 2016 Team LibreELEC
+#
+#  LibreELEC is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  LibreELEC is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with LibreELEC.  If not, see <http://www.gnu.org/licenses/>.
+################################################################################
+
+trap '[ -n "${GITDIR}" ] && rm -fr ${GITDIR}' EXIT
+
+ROOT=$(readlink -f $(dirname $0)/../..)
+
+# See http://git.kernel.org/cgit/linux/kernel/git/firmware/linux-firmware.git
+
+GITREPO=https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git
+PROJECTS="Generic Virtual"
+FWDIRS="amdgpu i915 radeon rtl_nic"
+
+GITDIR=${ROOT}/linux-firmware.git
+FWPKGS=packages/linux/firmware
+FWROOT=${ROOT}/${FWPKGS}
+
+cd ${ROOT}
+
+rm -fr ${GITDIR}
+git clone --depth=1 ${GITREPO} ${GITDIR}
+
+# Update linux/firmware
+(
+  cd ${GITDIR}
+  for fwdir in ${FWDIRS}; do
+    mkdir -p ${FWROOT}/${fwdir}
+    for fwfile in $(ls -1 ${fwdir}); do
+      if [ -f ${FWROOT}/${fwdir}/${fwfile} ]; then
+        oldmd5=$(md5sum ${FWROOT}/${fwdir}/${fwfile} | awk '{print $1}')
+        newmd5=$(md5sum ${fwdir}/${fwfile} | awk '{print $1}')
+        [ "${oldmd5}" == "${newmd5}" ] && continue
+        echo "Updating ${fwdir}/${fwfile}"
+      else
+        echo "Adding   ${fwdir}/${fwfile}"
+      fi
+    done
+    rm -fr ${FWROOT}/${fwdir}
+    cp -pr ${fwdir} ${FWROOT}
+  done
+)
+
+# Generate new list of firmware files
+FMWARE_LIST="$(cd ${FWROOT}; find . -not -type d | cut -c 3- | sort | tr -s '\n' ' ')"
+[ -z "${FMWARE_LIST}" ] && FMWARE_LIST=" "
+
+# Update config files with the new list
+for project in ${PROJECTS}; do
+  sed -i "s#CONFIG_EXTRA_FIRMWARE=.*#CONFIG_EXTRA_FIRMWARE=\"${FMWARE_LIST:0:-1}\"#" ${ROOT}/projects/${project}/linux/linux.x86_64.conf
+done
+
+# Identify deleted and new files
+GITDEL="$(git status --porcelain ${FWPKGS} | grep "^ D" | cut -c 4- | tr -s '\n' ' ')"
+GITADD="$(git status --porcelain ${FWPKGS} | grep "^??" | cut -c 4- | tr -s '\n' ' ')"
+
+[ -n "${GITDEL}" ] && echo -e "Old firmware files to be removed:\n\n  git rm ${GITDEL:0:-1}\n"
+[ -n "${GITADD}" ] && echo -e "New firmware files to be added:\n\n  git add ${GITADD:0:-1}\n"
