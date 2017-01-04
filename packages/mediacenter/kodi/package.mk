@@ -182,10 +182,14 @@ else
   KODI_VAAPI="-DENABLE_VAAPI=OFF"
 fi
 
+# Set CPU and ARCH of target so that cmake can use suitable optimisations.
+# Without setting CPU and ARCH, Kodi cmake only knows CPU but not ARCH, and for RPi/RPi2 will use
+# CPU=arm (from CMAKE_SYSTEM_PROCESSOR set in toolchain file, which is correct so don't change that!)
+# Kodi doesn't support our Generic TARGET_CPU which is x86-64 - it supports only x86_64, same as TARGET_ARCH...
 if [ "$TARGET_ARCH" = "x86_64" ]; then
-  KODI_ARCH="-DWITH_CPU=$TARGET_ARCH"
+  KODI_ARCH="-DWITH_CPU=$TARGET_ARCH -DWITH_ARCH=$TARGET_ARCH"
 else
-  KODI_ARCH="-DWITH_ARCH=$TARGET_ARCH"
+  KODI_ARCH="-DWITH_CPU=$TARGET_CPU -DWITH_ARCH=$TARGET_ARCH"
 fi
 
 if [ ! "$KODIPLAYER_DRIVER" = default ]; then
