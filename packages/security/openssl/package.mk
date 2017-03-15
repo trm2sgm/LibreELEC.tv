@@ -17,7 +17,7 @@
 ################################################################################
 
 PKG_NAME="openssl"
-PKG_VERSION="1.0.2k"
+PKG_VERSION="1.1.0e"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="BSD"
@@ -37,23 +37,18 @@ PKG_CONFIGURE_OPTS_SHARED="--openssldir=/etc/ssl \
                            shared \
                            threads \
                            no-ec2m \
-                           no-gmp \
-                           no-jpake \
-                           no-krb5 \
-                           no-libunbound \
                            no-md2 \
                            no-rc5 \
                            no-rfc3779
                            no-sctp \
                            no-ssl-trace \
-                           no-ssl2 \
                            no-ssl3 \
-                           no-store \
                            no-unit-test \
                            no-weak-ssl-ciphers \
                            no-zlib \
                            no-zlib-dynamic \
-                           no-static-engine"
+                           no-static-engine \
+                           no-dynamic-engine"
 
 pre_configure_host() {
   mkdir -p $PKG_BUILD/.$HOST_NAME

@@ -1,28 +1,31 @@
---- openssl-1.0.2j/apps/CA.pl.in	2006-04-28 02:30:49.000000000 +0200
-+++ openssl-1.0.2j/apps/CA.pl.in	2010-04-01 00:35:02.600553509 +0200
-@@ -53,7 +53,7 @@
- $X509="$openssl x509";
- $PKCS12="$openssl pkcs12";
+From 336ee99ceb0fd64ece9ff7ac53a862cf920ebd43 Mon Sep 17 00:00:00 2001
+From: MilhouseVH <milhouseVH.github@nmacleod.com>
+Date: Wed, 15 Mar 2017 13:11:26 +0000
+Subject: [PATCH] Configure CA directory
+
+---
+ apps/CA.pl.in    | 2 +-
+ apps/openssl.cnf | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/apps/CA.pl.in b/apps/CA.pl.in
+index 3187e47..935b375 100644
+--- a/apps/CA.pl.in
++++ b/apps/CA.pl.in
+@@ -33,7 +33,7 @@ my $X509 = "$openssl x509";
+ my $PKCS12 = "$openssl pkcs12";
  
--$CATOP="./demoCA";
-+$CATOP="/etc/ssl";
- $CAKEY="cakey.pem";
- $CAREQ="careq.pem";
- $CACERT="cacert.pem";
---- openssl-1.0.2j/apps/CA.sh	2009-10-15 19:27:47.000000000 +0200
-+++ openssl-1.0.2j/apps/CA.sh	2010-04-01 00:35:02.600553509 +0200
-@@ -68,7 +68,7 @@
- X509="$OPENSSL x509"
- PKCS12="openssl pkcs12"
- 
--if [ -z "$CATOP" ] ; then CATOP=./demoCA ; fi
-+if [ -z "$CATOP" ] ; then CATOP=/etc/ssl ; fi
- CAKEY=./cakey.pem
- CAREQ=./careq.pem
- CACERT=./cacert.pem
---- openssl-1.0.2j/apps/openssl.cnf	2009-04-04 20:09:43.000000000 +0200
-+++ openssl-1.0.2j/apps/openssl.cnf	2010-04-01 00:35:02.607220681 +0200
-@@ -39,7 +39,7 @@
+ # default openssl.cnf file has setup as per the following
+-my $CATOP = "./demoCA";
++my $CATOP = "/etc/ssl";
+ my $CAKEY = "cakey.pem";
+ my $CAREQ = "careq.pem";
+ my $CACERT = "cacert.pem";
+diff --git a/apps/openssl.cnf b/apps/openssl.cnf
+index b3e7444..e2e93cc 100644
+--- a/apps/openssl.cnf
++++ b/apps/openssl.cnf
+@@ -39,7 +39,7 @@ default_ca	= CA_default		# The default ca section
  ####################################################################
  [ CA_default ]
  
@@ -31,3 +34,6 @@
  certs		= $dir/certs		# Where the issued certs are kept
  crl_dir		= $dir/crl		# Where the issued crl are kept
  database	= $dir/index.txt	# database index file.
+-- 
+2.7.4
+
