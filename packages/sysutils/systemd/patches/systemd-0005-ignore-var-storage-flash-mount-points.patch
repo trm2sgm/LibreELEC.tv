@@ -1,0 +1,30 @@
+From 119e4641f6699cf2b51dd0754395a16f667c2104 Mon Sep 17 00:00:00 2001
+From: MilhouseVH <milhouseVH.github@nmacleod.com>
+Date: Mon, 17 Apr 2017 06:55:01 +0100
+Subject: [PATCH] HACK: Stop systemd from unmounting busy filesystems - always
+ going to fail
+
+---
+ src/core/mount-setup.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/src/core/mount-setup.c b/src/core/mount-setup.c
+index 7295efb..2887d01 100644
+--- a/src/core/mount-setup.c
++++ b/src/core/mount-setup.c
+@@ -122,7 +122,11 @@ static const char ignore_paths[] =
+         /* Container bind mounts */
+         "/proc/sys\0"
+         "/dev/console\0"
+-        "/proc/kmsg\0";
++        "/proc/kmsg\0"
++        /* LibreELEC: always busy */
++        "/var\0"
++        "/flash\0"
++        "/storage\0";
+ 
+ bool mount_point_is_api(const char *path) {
+         unsigned i;
+-- 
+2.7.4
+
