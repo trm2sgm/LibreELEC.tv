@@ -2,7 +2,6 @@
 Description=Setup Timezone data
 DefaultDependencies=no
 Before=systemd-udevd.service
-After=var.mount
 
 [Service]
 Type=oneshot

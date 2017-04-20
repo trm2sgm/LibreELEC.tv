@@ -1,7 +1,6 @@
 [Unit]
 Description=Debug /var/log relink
 DefaultDependencies=false
-After=var.mount
 Before=systemd-journal-flush.service
 ConditionKernelCommandLine=!installer
 ConditionKernelCommandLine=|debugging
