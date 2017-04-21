@@ -71,11 +71,21 @@ unset LD_LIBRARY_PATH
 
 rm -f $STAMP_URL $STAMP_SHA
 
+# Prefer downloads from our mirror to avoid downloading junk if upstream is now a
+# redirect to a holding page (somtimes the case when building out of a legacy branch)
+if [ "${PREFER_PACKAGE_MIRROR}" == "yes" ]; then
+  _URL1="$PACKAGE_MIRROR"
+  _URL2="$PKG_URL"
+else
+  _URL1="$PKG_URL"
+  _URL2="$PACKAGE_MIRROR"
+fi
+
 NBWGET=10
 while [ $NBWGET -gt 0 ]; do
   rm -f $PACKAGE
 
-  if $WGET_CMD "$PKG_URL" || $WGET_CMD "$PACKAGE_MIRROR"; then
+  if $WGET_CMD "${_URL1}" || $WGET_CMD "${_URL2}"; then
     CALC_SHA256="$(sha256sum $PACKAGE | cut -d" " -f1)"
 
     [ -z "${PKG_SHA256}" -o "${PKG_SHA256}" == "${CALC_SHA256}" ] && break
