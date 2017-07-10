@@ -19,7 +19,7 @@ ExecStop=/bin/kill -TERM $MAINPID
 TimeoutStopSec=5
 Restart=always
 RestartSec=2
-StartLimitInterval=0
+StartLimitIntervalSec=0
 LimitNOFILE=16384
 
 [Install]

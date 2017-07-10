@@ -11,7 +11,7 @@ EnvironmentFile=-/storage/.cache/timezone
 ExecStartPre=/bin/mkdir -p /var/run
 ExecStart=/bin/ln -sf /usr/share/zoneinfo/${TIMEZONE} /var/run/localtime
 RemainAfterExit=yes
-StartLimitInterval=0
+StartLimitIntervalSec=0
 
 [Install]
 WantedBy=sysinit.target

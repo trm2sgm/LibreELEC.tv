@@ -7,7 +7,7 @@ RestartPreventExitStatus=12
 TimeoutStopSec=5
 Restart=always
 RestartSec=60
-StartLimitInterval=0
+StartLimitIntervalSec=0
 
 [Install]
 WantedBy=multi-user.target

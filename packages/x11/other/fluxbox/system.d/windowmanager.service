@@ -11,7 +11,7 @@ ExecStart=/usr/bin/fluxbox
 KillMode=process
 Restart=always
 RestartSec=1
-StartLimitInterval=0
+StartLimitIntervalSec=0
 TimeoutStopSec=1s
 
 [Install]

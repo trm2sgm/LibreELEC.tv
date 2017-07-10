@@ -8,7 +8,7 @@ ExecStart=/bin/sh /storage/.kodi/addons/service.tigervnc/bin/tigervnc.start
 TimeoutStopSec=1
 Restart=always
 RestartSec=2
-StartLimitInterval=0
+StartLimitIntervalSec=0
 
 [Install]
 WantedBy=kodi.target

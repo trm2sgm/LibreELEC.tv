@@ -11,7 +11,7 @@ ExecStart=/usr/sbin/sshd -D $SSH_ARGS
 ExecReload=/bin/kill -HUP $MAINPID
 TimeoutStopSec=1s
 RestartSec=2
-StartLimitInterval=0
+StartLimitIntervalSec=0
 
 [Install]
 WantedBy=multi-user.target

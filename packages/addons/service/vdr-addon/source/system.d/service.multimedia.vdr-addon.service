@@ -7,7 +7,7 @@ ExecStart=/bin/sh -c "exec sh /storage/.kodi/addons/service.multimedia.vdr-addon
 TimeoutStopSec=2
 Restart=always
 RestartSec=2
-StartLimitInterval=0
+StartLimitIntervalSec=0
 
 [Install]
 WantedBy=kodi.target

@@ -8,7 +8,7 @@ ExecStart=/bin/sh -c "exec sh /storage/.kodi/addons/service.softcam.oscam/bin/os
 TimeoutStopSec=1
 Restart=always
 RestartSec=2
-StartLimitInterval=0
+StartLimitIntervalSec=0
 
 [Install]
 WantedBy=kodi.target

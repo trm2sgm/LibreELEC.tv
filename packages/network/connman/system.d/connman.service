@@ -18,7 +18,7 @@ ExecStartPre=/sbin/ifconfig lo 127.0.0.1 netmask 255.0.0.0 up
 ExecStart=/bin/sh -c ". /usr/lib/connman/connman-setup; exec /usr/sbin/connmand -nr $CONNMAN_MAIN $CONNMAN_DEBUG"
 StandardOutput=null
 RestartSec=2
-StartLimitInterval=0
+StartLimitIntervalSec=0
 
 [Install]
 WantedBy=multi-user.target
