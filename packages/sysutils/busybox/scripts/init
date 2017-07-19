@@ -419,7 +419,7 @@
     if [ -f "$UPDATE_DIR/$2" -a -f "$3" ]; then
       mount -o remount,rw /flash
 
-      StartProgress percent "Updating $1... " "$3" $(stat -t "$UPDATE_DIR/$2" | awk '{print $2}')
+      StartProgress percent "$(echo "Updating $1..."|awk '{printf "%-22s",$0}') " "$3" $(stat -t "$UPDATE_DIR/$2" | awk '{print $2}')
         # use dd here with conv=fsync so that all writes are non-buffered
         # ensuring accurate progress - take the sync hit during the
         # transfer, rather than when flushing file buffers after the progress
@@ -439,7 +439,7 @@
     local result
 
     if [ -f "$UPDATE_DIR/$2" -a -b "$3" ]; then
-      StartProgress spinner "Updating $1... "
+      StartProgress spinner "$(echo "Updating $1..."|awk '{printf "%-22s",$0}') "
         result="$(dd if="$UPDATE_DIR/$2" of="$3" 2>&1)"
         StopProgress "done"
       echo "${result}"
@@ -724,7 +724,7 @@
   }
 
   do_cleanup() {
-    StartProgress spinner "Cleaning up... "
+    StartProgress spinner "Cleaning up...         "
 
     if [ -d $UPDATE_ROOT/.tmp/mnt ]; then
       if mountpoint -q $UPDATE_ROOT/.tmp/mnt ; then
@@ -950,9 +950,9 @@
     FLASH_FREE_MIN=$(($FLASH_FREE_MIN*1024*1024))
 
     if [ $TMP_SIZE -ge $FLASH_FREE_MIN ]; then
-      echo "Checking size: OK"
+      echo "Checking free space... OK"
     else
-      echo "Checking size: FAILED"
+      echo "Checking free space... FAILED"
       echo ""
       echo "Your System (FAT) partition is too small for this update,"
       echo "and there is not enough space for the update to be installed!"
