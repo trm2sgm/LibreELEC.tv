@@ -209,7 +209,7 @@ PKG_CMAKE_OPTS_TARGET="-DNATIVEPREFIX=$TOOLCHAIN \
                        -DDEPENDS_PATH=$PKG_BUILD/depends \
                        -DPYTHON_EXECUTABLE=$TOOLCHAIN/bin/python2.7 \
                        -DPYTHON_INCLUDE_DIRS=$SYSROOT_PREFIX/usr/include/python2.7 \
-                       -DGIT_VERSION=$PKG_VERSION \
+                       -DGIT_VERSION=$([ "$(type -t get_source_rev)" == "function" ] && get_source_rev $PKG_NAME $PKG_VERSION || echo $PKG_VERSION) \
                        -DWITH_FFMPEG=$(get_build_dir ffmpeg) \
                        -DENABLE_INTERNAL_FFMPEG=OFF \
                        -DFFMPEG_INCLUDE_DIRS=$SYSROOT_PREFIX/usr \
