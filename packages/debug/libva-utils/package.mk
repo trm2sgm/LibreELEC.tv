@@ -17,12 +17,12 @@
 ################################################################################
 
 PKG_NAME="libva-utils"
-PKG_VERSION="1.8.2"
-PKG_SHA256="038cc320d6403a626d78a50aad6c8b70a13f2359cea1e0cf0ab773773135bf4c"
+PKG_VERSION="5204d45"
+PKG_SHA256="0dfc8bacb01cb171f0caa54bffd7709b6fe0576d2fdaa6d2136aa00b7365907c"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/01org/libva-utils"
-PKG_URL="https://github.com/01org/libva-utils/releases/download/$PKG_VERSION/$PKG_NAME-$PKG_VERSION.tar.bz2"
+PKG_URL="https://github.com/01org/libva-utils/archive/$PKG_VERSION.tar.gz"
 PKG_SECTION="debug"
 PKG_SHORTDESC="Libva-utils is a collection of tests for VA-API (VIdeo Acceleration API)"
 PKG_LONGDESC="Libva-utils is a collection of tests for VA-API (VIdeo Acceleration API)"
