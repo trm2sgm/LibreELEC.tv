@@ -17,8 +17,8 @@
 ################################################################################
 
 PKG_NAME="libva-utils"
-PKG_VERSION="5204d45"
-PKG_SHA256="0dfc8bacb01cb171f0caa54bffd7709b6fe0576d2fdaa6d2136aa00b7365907c"
+PKG_VERSION="222133a"
+PKG_SHA256="edcacfcf07d9ded4914323ba9390a898f97f2307914b1cf6f0e2e0fc72f2429f"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/01org/libva-utils"
