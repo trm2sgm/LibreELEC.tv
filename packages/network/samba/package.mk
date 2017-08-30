@@ -96,6 +96,34 @@ PKG_SAMBA_TARGET="smbclient"
 [ "$SAMBA_SERVER" = "yes" ] && PKG_SAMBA_TARGET+=",smbd/smbd,nmbd,smbpasswd"
 [ "$DEVTOOLS" = "yes" ] && PKG_SAMBA_TARGET+=",client/smbclient,smbtree,testparm"
 
+export PYTHON=$TOOLCHAIN/bin/python2
+
+post_unpack() {
+  # Update source code to use python2 and python2-config
+  sed -i -e "s|/usr/bin/env python$|/usr/bin/env python2|" \
+         -e "s|python-config|python2-config|" \
+         -e "s|bin/python|bin/python2|" \
+       $(find $PKG_BUILD -type f -name '*.py')
+
+  sed -i -e "s|/usr/bin/env python$|/usr/bin/env python2|" \
+       $(find $PKG_BUILD -type f -name 'wscript*')
+
+  sed -i -e "s|/usr/bin/env python$|/usr/bin/env python2|" \
+         -e "s|python-config|python2-config|" \
+         -e "s|bin/python|bin/python2|" \
+      $(find $PKG_BUILD -type f -name 'configure.ac')
+
+  sed -i -e "s|/usr/bin/env python$|/usr/bin/env python2|" \
+         -e "s|python-config|python2-config|" \
+         -e "s|bin/python|bin/python2|" \
+      $(find $PKG_BUILD/buildtools -type f)
+
+  sed -i -e "s|/usr/bin/env python$|/usr/bin/env python2|" \
+         -e "s|python-config|python2-config|" \
+         -e "s|bin/python|bin/python2|" \
+      $(find $PKG_BUILD/source4/scripting -type f)
+}
+
 pre_configure_target() {
 # samba uses its own build directory
   cd $PKG_BUILD
@@ -116,7 +144,7 @@ configure_target() {
   cp $PKG_DIR/config/samba4-cache.txt $PKG_BUILD/cache.txt
     echo "Checking uname machine type: \"$TARGET_ARCH\"" >> $PKG_BUILD/cache.txt
 
-  PYTHON_CONFIG="$SYSROOT_PREFIX/usr/bin/python-config" \
+  PYTHON_CONFIG="$SYSROOT_PREFIX/usr/bin/python2-config" \
   python_LDFLAGS="" python_LIBDIR="" \
   ./configure $PKG_CONFIGURE_OPTS
 }
