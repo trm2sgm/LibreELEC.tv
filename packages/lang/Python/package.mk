@@ -109,32 +109,8 @@ makeinstall_target() {
         PYTHON_MODULES_INCLUDE="$TARGET_INCDIR" \
         PYTHON_MODULES_LIB="$TARGET_LIBDIR" \
         install
-
-  make  -j1 CC="$CC" DESTDIR=$INSTALL \
-        PYTHON_DISABLE_MODULES="$PY_DISABLED_MODULES" \
-        PYTHON_MODULES_INCLUDE="$TARGET_INCDIR" \
-        PYTHON_MODULES_LIB="$TARGET_LIBDIR" \
-        install
 }
 
 post_makeinstall_target() {
-  EXCLUDE_DIRS="bsddb idlelib lib-tk lib2to3 msilib pydoc_data test unittest"
-  for dir in $EXCLUDE_DIRS; do
-    rm -rf $INSTALL/usr/lib/python*/$dir
-  done
-
-  rm -rf $INSTALL/usr/lib/python*/config
-  rm -rf $INSTALL/usr/bin/2to3
-  rm -rf $INSTALL/usr/bin/idle
-  rm -rf $INSTALL/usr/bin/pydoc
-  rm -rf $INSTALL/usr/bin/smtpd.py
-  rm -rf $INSTALL/usr/bin/python*-config
-
-  cd $INSTALL/usr/lib/python2.7
-  python2 -Wi -t -B $PKG_BUILD/Lib/compileall.py -d /usr/lib/python2.7 -f .
-  find $INSTALL/usr/lib/python2.7 -name "*.py" -exec rm -f {} \; &>/dev/null
-
-  # strip
-  chmod u+w $INSTALL/usr/lib/libpython*.so.*
-  debug_strip $INSTALL/usr
+  rm -rf $INSTALL/usr
 }
