@@ -29,6 +29,8 @@ PKG_SECTION="lang"
 PKG_SHORTDESC="python: The Python programming language"
 PKG_LONGDESC="Python is an interpreted object-oriented programming language, and is often compared with Tcl, Perl, Java or Scheme."
 
+PKG_PYTHON_VERSION=2.7
+
 PKG_IS_ADDON="no"
 PKG_AUTORECONF="yes"
 
@@ -85,10 +87,13 @@ makeinstall_host() {
        PYTHON_MODULES_LIB="$HOST_LIBDIR" \
        PYTHON_DISABLE_MODULES="readline _curses _curses_panel $PY_DISABLED_MODULES" \
        install
+
+  # Ensure python -> python3, as Python3 is now the default python
+  ln -sf python3 $TOOLCHAIN/bin/python
 }
 
 pre_configure_target() {
-  export PYTHON_FOR_BUILD=$TOOLCHAIN/bin/python
+  export PYTHON_FOR_BUILD=$TOOLCHAIN/bin/python2
 }
 
 make_target() {
@@ -126,7 +131,7 @@ post_makeinstall_target() {
   rm -rf $INSTALL/usr/bin/python*-config
 
   cd $INSTALL/usr/lib/python2.7
-  python -Wi -t -B $PKG_BUILD/Lib/compileall.py -d /usr/lib/python2.7 -f .
+  python2 -Wi -t -B $PKG_BUILD/Lib/compileall.py -d /usr/lib/python2.7 -f .
   find $INSTALL/usr/lib/python2.7 -name "*.py" -exec rm -f {} \; &>/dev/null
 
   # strip
