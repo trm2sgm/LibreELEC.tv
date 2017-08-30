@@ -23,7 +23,7 @@ PKG_ARCH="any"
 PKG_LICENSE="OSS"
 PKG_SITE="http://www.X.org"
 PKG_URL="http://xcb.freedesktop.org/dist/$PKG_NAME-$PKG_VERSION.tar.bz2"
-PKG_DEPENDS_TARGET="toolchain util-macros Python:host"
+PKG_DEPENDS_TARGET="toolchain util-macros Python3:host"
 PKG_SECTION="x11/proto"
 PKG_SHORTDESC="xcb-proto: X C-language Bindings protocol headers"
 PKG_LONGDESC="X C-language Bindings protocol headers."
@@ -33,3 +33,8 @@ PKG_AUTORECONF="no"
 
 # package specific configure options
 PKG_CONFIGURE_OPTS_TARGET="--without-xmlto"
+
+post_unpack() {
+  # Fix inconsistent indentation - tabs to 8 spaces
+  sed -e 's/\t/        /g' -i $(find $PKG_BUILD -type f -name '*.py')
+}

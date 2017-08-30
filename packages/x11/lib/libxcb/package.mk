@@ -23,7 +23,7 @@ PKG_ARCH="any"
 PKG_LICENSE="OSS"
 PKG_SITE="http://xcb.freedesktop.org"
 PKG_URL="http://xcb.freedesktop.org/dist/$PKG_NAME-$PKG_VERSION.tar.bz2"
-PKG_DEPENDS_TARGET="toolchain util-macros Python:host xcb-proto libpthread-stubs libXau"
+PKG_DEPENDS_TARGET="toolchain util-macros Python3:host xcb-proto libpthread-stubs libXau"
 PKG_SECTION="x11/lib"
 PKG_SHORTDESC="libxcb: X C-language Bindings library"
 PKG_LONGDESC="X C-language Bindings library."
@@ -37,9 +37,15 @@ PKG_CONFIGURE_OPTS_TARGET="--enable-static --disable-shared \
                            --disable-selinux \
                            --disable-xvmc"
 
+post_unpack() {
+  # Fix inconsistent indentation - tabs to 8 spaces
+  sed -e 's/\t/        /g' -i $(find $PKG_BUILD -type f -name '*.py')
+}
+
 pre_configure_target() {
-  PYTHON_LIBDIR="`ls -d $SYSROOT_PREFIX/usr/lib/python*`"
-  PYTHON_TOOLCHAIN_PATH=`ls -d $PYTHON_LIBDIR/site-packages`
+  PYTHON_VER=$(get_pkg_variable Python3 PKG_PYTHON_VERSION)
+  PYTHON_LIBDIR=$SYSROOT_PREFIX/usr/lib/python$PYTHON_VER
+  PYTHON_TOOLCHAIN_PATH=$PYTHON_LIBDIR/site-packages
 
   PKG_CONFIG="$PKG_CONFIG --define-variable=pythondir=$PYTHON_TOOLCHAIN_PATH"
   PKG_CONFIG="$PKG_CONFIG --define-variable=xcbincludedir=$SYSROOT_PREFIX/usr/share/xcb"

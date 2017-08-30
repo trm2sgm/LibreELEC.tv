@@ -25,7 +25,7 @@ PKG_SITE="http://www.boost.org/"
 PKG_URL="$SOURCEFORGE_SRC/boost/boost/1.61.0/${PKG_NAME}_${PKG_VERSION}.tar.bz2"
 PKG_SOURCE_DIR="${PKG_NAME}_${PKG_VERSION}"
 PKG_DEPENDS_HOST=""
-PKG_DEPENDS_TARGET="toolchain boost:host Python:host zlib bzip2"
+PKG_DEPENDS_TARGET="toolchain boost:host Python3:host zlib bzip2"
 PKG_SECTION="devel"
 PKG_SHORTDESC="boost: Peer-reviewed STL style libraries for C++"
 PKG_LONGDESC="Boost provides free peer-reviewed portable C++ source libraries. The emphasis is on libraries which work well with the C++ Standard Library. One goal is to establish existing practice and provide reference implementations so that the Boost libraries are suitable for eventual standardization. Some of the libraries have already been proposed for inclusion in the C++ Standards Committee's upcoming C++ Standard Library Technical Report."
@@ -52,7 +52,7 @@ pre_configure_target() {
 configure_target() {
   sh bootstrap.sh --prefix=/usr \
                   --with-bjam=$TOOLCHAIN/bin/bjam \
-                  --with-python=$TOOLCHAIN/bin/python \
+                  --with-python=$TOOLCHAIN/bin/python3 \
 
   echo "using gcc : `$CC -v 2>&1  | tail -n 1 |awk '{print $3}'` : $CC  : <compileflags>\"$CFLAGS\" <linkflags>\"$LDFLAGS\" ;" \
     > tools/build/src/user-config.jam

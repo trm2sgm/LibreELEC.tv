@@ -24,7 +24,7 @@ PKG_LICENSE="prop."
 PKG_SITE="https://libreelec.tv"
 PKG_URL="https://github.com/LibreELEC/service.libreelec.settings/archive/$PKG_VERSION.tar.gz"
 PKG_SOURCE_DIR="service.libreelec.settings-$PKG_VERSION*"
-PKG_DEPENDS_TARGET="toolchain Python connman pygobject dbus-python"
+PKG_DEPENDS_TARGET="toolchain Python3 connman pygobject dbus-python"
 PKG_SECTION=""
 PKG_SHORTDESC="LibreELEC-settings: Settings dialog for LibreELEC"
 PKG_LONGDESC="LibreELEC-settings: is a settings dialog for LibreELEC"
@@ -49,11 +49,13 @@ post_makeinstall_target() {
 #      rm -f resources/lib/modules/bluetooth.py
 #    fi
 
-  python -Wi -t -B $TOOLCHAIN/lib/python2.7/compileall.py $INSTALL/usr/share/kodi/addons/service.libreelec.settings/resources/lib/ -f
-  rm -rf `find $INSTALL/usr/share/kodi/addons/service.libreelec.settings/resources/lib/ -name "*.py"`
+  PKG_PYTHON_VERSION=$(get_pkg_variable Python3 PKG_PYTHON_VERSION)
+  BASE_DIR=/usr/share/kodi/addons/service.libreelec.settings
+  python3 -Wi -t -B $TOOLCHAIN/lib/python$PKG_PYTHON_VERSION/compileall.py -d $BASE_DIR $INSTALL$BASE_DIR/resources/lib/ -b -f
+  rm -rf `find $INSTALL$BASE_DIR/resources/lib/ -name "*.py"`
 
-  python -Wi -t -B $TOOLCHAIN/lib/python2.7/compileall.py $INSTALL/usr/share/kodi/addons/service.libreelec.settings/oe.py -f
-  rm -rf $INSTALL/usr/share/kodi/addons/service.libreelec.settings/oe.py
+  python3 -Wi -t -B $TOOLCHAIN/lib/python$PKG_PYTHON_VERSION/compileall.py -d $BASE_DIR $INSTALL$BASE_DIR/oe.py -b -f
+  rm -rf $INSTALL$BASE_DIR/oe.py
 }
 
 post_install() {

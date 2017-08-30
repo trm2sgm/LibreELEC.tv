@@ -23,7 +23,7 @@ PKG_ARCH="any"
 PKG_LICENSE="LGPL"
 PKG_SITE="https://github.com/vpelletier/python-libusb1"
 PKG_URL="https://github.com/vpelletier/$PKG_NAME/archive/$PKG_VERSION.tar.gz"
-PKG_DEPENDS_TARGET="toolchain Python distutilscross:host"
+PKG_DEPENDS_TARGET="toolchain Python3 distutilscross:host"
 PKG_PRIORITY="optional"
 PKG_SECTION="python"
 PKG_SHORTDESC="Pure-python wrapper for libusb-1.0"
@@ -33,7 +33,7 @@ PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
 
 make_target() {
-  python setup.py build
+  python3 setup.py build
 }
 
 makeinstall_target() {
