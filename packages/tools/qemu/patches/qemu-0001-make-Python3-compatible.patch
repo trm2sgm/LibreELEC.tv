@@ -1,0 +1,98 @@
+From 6eb460e31ec492ae418a47c24b1a45c66b793ee0 Mon Sep 17 00:00:00 2001
+From: MilhouseVH <milhouseVH.github@nmacleod.com>
+Date: Thu, 31 Aug 2017 03:22:31 +0100
+Subject: [PATCH] Python3 compatability
+
+---
+ configure              | 8 --------
+ scripts/ordereddict.py | 8 ++++----
+ scripts/qapi.py        | 7 ++++---
+ 3 files changed, 8 insertions(+), 15 deletions(-)
+
+diff --git a/configure b/configure
+index 3770d7c..c5304dc 100755
+--- a/configure
++++ b/configure
+@@ -1181,14 +1181,6 @@ if ! has $python; then
+   error_exit "Python not found. Use --python=/path/to/python"
+ fi
+ 
+-# Note that if the Python conditional here evaluates True we will exit
+-# with status 1 which is a shell 'false' value.
+-if ! $python -c 'import sys; sys.exit(sys.version_info < (2,6) or sys.version_info >= (3,))'; then
+-  error_exit "Cannot use '$python', Python 2.6 or later is required." \
+-      "Note that Python 3 or later is not yet supported." \
+-      "Use --python=/path/to/python to specify a supported Python."
+-fi
+-
+ # Suppress writing compiled files
+ python="$python -B"
+ 
+diff --git a/scripts/ordereddict.py b/scripts/ordereddict.py
+index 2d1d813..c380cd2 100644
+--- a/scripts/ordereddict.py
++++ b/scripts/ordereddict.py
+@@ -20,7 +20,7 @@
+ #     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ #     OTHER DEALINGS IN THE SOFTWARE.
+ 
+-from UserDict import DictMixin
++from collections import MutableMapping as DictMixin
+ 
+ 
+ class OrderedDict(dict, DictMixin):
+@@ -95,9 +95,9 @@ class OrderedDict(dict, DictMixin):
+     pop = DictMixin.pop
+     values = DictMixin.values
+     items = DictMixin.items
+-    iterkeys = DictMixin.iterkeys
+-    itervalues = DictMixin.itervalues
+-    iteritems = DictMixin.iteritems
++    iterkeys = DictMixin.keys
++    itervalues = DictMixin.values
++    iteritems = DictMixin.items
+ 
+     def __repr__(self):
+         if not self:
+diff --git a/scripts/qapi.py b/scripts/qapi.py
+index 21bc32f..4b99985 100644
+--- a/scripts/qapi.py
++++ b/scripts/qapi.py
+@@ -18,6 +18,7 @@ import getopt
+ import os
+ import sys
+ import string
++import codecs
+ 
+ builtin_types = {
+     'str':      'QTYPE_QSTRING',
+@@ -164,7 +165,7 @@ class QAPISchemaParser(object):
+                 if incl_abs_fname in previously_included:
+                     continue
+                 try:
+-                    fobj = open(incl_abs_fname, 'r')
++                    fobj = codecs.open(incl_abs_fname, 'r', 'utf-8')
+                 except IOError as e:
+                     raise QAPIExprError(expr_info,
+                                         '%s: %s' % (e.strerror, include))
+@@ -1251,7 +1252,7 @@ class QAPISchemaEvent(QAPISchemaEntity):
+ class QAPISchema(object):
+     def __init__(self, fname):
+         try:
+-            self.exprs = check_exprs(QAPISchemaParser(open(fname, "r")).exprs)
++            self.exprs = check_exprs(QAPISchemaParser(codecs.open(fname, "r", 'utf-8')).exprs)
+             self._entity_dict = {}
+             self._predefining = True
+             self._def_predefineds()
+@@ -1516,7 +1517,7 @@ def c_enum_const(type_name, const_name, prefix=None):
+         type_name = prefix
+     return camel_to_upper(type_name) + '_' + c_name(const_name, False).upper()
+ 
+-c_name_trans = string.maketrans('.-', '__')
++c_name_trans = str.maketrans('.-', '__')
+ 
+ 
+ # Map @name to a valid C identifier.
+-- 
+2.7.4
+

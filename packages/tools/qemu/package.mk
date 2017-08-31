@@ -39,6 +39,7 @@ HOST_CONFIGURE_OPTS="--prefix=$TOOLCHAIN \
   --localstatedir=$TOOLCHAIN/var \
   --extra-cflags=-I$TOOLCHAIN/include \
   --extra-ldflags=-L$TOOLCHAIN/lib \
+  --python=$TOOLCHAIN/bin/python3 \
   --static \
   --disable-vnc \
   --disable-werror \
@@ -46,3 +47,8 @@ HOST_CONFIGURE_OPTS="--prefix=$TOOLCHAIN \
   --disable-system \
   --disable-user \
   --disable-docs"
+
+post_patch() {
+  # Automatically refactor python2 code to python3
+  $TOOLCHAIN/bin/2to3-$(get_pkg_variable Python3 PKG_PYTHON_VERSION) --processes=$(nproc) --write --nobackups --no-diffs $PKG_BUILD
+}
