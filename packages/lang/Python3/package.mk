@@ -134,6 +134,7 @@ post_makeinstall_target() {
   rm -rf $INSTALL/usr/bin/pyenv
   rm -rf $INSTALL/usr/bin/smtpd.py INSTALL/usr/bin/smtpd.py.*
   rm -rf $INSTALL/usr/bin/python*-config
+  ln -sf /usr/bin/python3 $INSTALL/usr/bin/python
 
   cd $INSTALL$PYTHON_PATH_LIB
   $TOOLCHAIN/bin/python3 -Wi -t -B $PKG_BUILD/Lib/compileall.py -d $PYTHON_PATH_LIB -b -f .
