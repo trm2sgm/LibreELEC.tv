@@ -115,27 +115,31 @@ post_makeinstall_host() {
   rm -f $TOOLCHAIN/bin/pydoc*
 
   cp $PKG_BUILD/Tools/scripts/reindent.py $TOOLCHAIN/lib/python$PKG_INSTALL_VERSION
+
+  # Ensure unversioned python is installed in toolchain
+  ln -sf python$PKG_INSTALL_VERSION $TOOLCHAIN/bin/python
 }
 
 post_makeinstall_target() {
-  PYTHON_DIR=/usr/lib/python$PKG_INSTALL_VERSION
+  INSTALL_PATH_LIB=$INSTALL/usr/lib/python$PKG_INSTALL_VERSION
 
-  EXCLUDE_DIRS="ensurepip config compiler distutils sysconfigdata unittest lib2to3 test"
+  EXCLUDE_DIRS="config compiler sysconfigdata lib-dynload/sysconfigdata lib2to3 test"
   for dir in $EXCLUDE_DIRS; do
-    rm -rf $INSTALL/$PYTHON_DIR/$dir
+    rm -rf $INSTALL_PATH_LIB/$dir
   done
 
-  rm -rf $INSTALL/usr/lib/python*/config
-  rm -rf $INSTALL/usr/bin/2to3
-  rm -rf $INSTALL/usr/bin/idle
-  rm -rf $INSTALL/usr/bin/pydoc
-  rm -rf $INSTALL/usr/bin/smtpd.py
+  rm -rf $INSTALL/usr/bin/pyenv
   rm -rf $INSTALL/usr/bin/python*-config
-  ln -sf /usr/bin/python3 $INSTALL/usr/bin/python
+  rm -rf $INSTALL/usr/bin/smtpd.py INSTALL/usr/bin/smtpd.py.*
 
-  cd $INSTALL/$PYTHON_DIR
-  python3 -Wi -t -B $PKG_BUILD/Lib/compileall.py -d $PYTHON_DIR -f .
-  find $INSTALL/$PYTHON_DIR -name "*.py" -exec rm -f {} \; &>/dev/null
+  $TOOLCHAIN/bin/python -Wi -t -B $TOOLCHAIN/lib/python$PKG_INSTALL_VERSION/compileall.py -d ${INSTALL_PATH_LIB#${INSTALL}} -b -f $INSTALL_PATH_LIB
+  find $INSTALL_PATH_LIB -name "*.py" -exec rm -f {} \; &>/dev/null
+
+  # Ensure unversioned python is installed in target
+  ln -sf python$PKG_INSTALL_VERSION $INSTALL/usr/bin/python
+
+  # Ensure unversioned python-config is installed in sysroot
+  ln -sf python-config$PKG_INSTALL_VERSION $SYSROOT_PREFIX/usr/bin/python-config
 
   # strip
   chmod u+w $INSTALL/usr/lib/libpython*.so.*
