@@ -39,7 +39,7 @@ make_target() {
         CC="$CC" \
         AR="$TARGET_AR" \
         CFLAGS="$TARGET_CFLAGS" \
-        CPPFLAGS="$TARGET_CPPFLAGS -I${SYSROOT_PREFIX}/usr/include/python2.7"
+        CPPFLAGS="$TARGET_CPPFLAGS -I${SYSROOT_PREFIX}/usr/include/python$(get_pkg_variable Python PKG_INSTALL_VERSION)"
 }
 
 makeinstall_target() {
