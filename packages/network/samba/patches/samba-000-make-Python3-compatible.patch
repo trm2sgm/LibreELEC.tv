@@ -1,0 +1,17 @@
+diff --git a/third_party/pep8/testsuite/E90.py b/third_party/pep8/testsuite/E90.py
+index 3111c68..5e81d8f 100644
+--- a/third_party/pep8/testsuite/E90.py
++++ b/third_party/pep8/testsuite/E90.py
+@@ -5,9 +5,9 @@
+ #: E901 E101 W191
+ while True:
+     try:
+-	    pass
+-	except:
+-		print 'Whoops'
++        pass
++    except:
++        print 'Whoops'
+ #: E122 E225 E251 E251 E701
+ 
+ # Do not crash if code is invalid
