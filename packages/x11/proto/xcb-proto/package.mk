@@ -30,6 +30,7 @@ PKG_LONGDESC="X C-language Bindings protocol headers."
 
 PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
+PKG_FIXPYTHON="yes"
 
 # package specific configure options
 PKG_CONFIGURE_OPTS_TARGET="--without-xmlto"
