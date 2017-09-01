@@ -38,6 +38,9 @@ pre_configure_target() {
 }
 
 post_makeinstall_target() {
+find $INSTALL/usr/lib -ls >/tmp/pytest/$PROFILE.$PKG_NAME.lib
+find $INSTALL/usr/bin -ls >/tmp/pytest/$PROFILE.$PKG_NAME.bin
+find $INSTALL/usr/share/pygobject -ls >/tmp/pytest/$PROFILE.$PKG_NAME.share
   find $INSTALL/usr/lib -name "*.py" -exec rm -rf "{}" ";"
   find $INSTALL/usr/lib -name "*.pyc" -exec rm -rf "{}" ";"
 
