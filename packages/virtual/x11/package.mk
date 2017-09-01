@@ -29,6 +29,7 @@ PKG_LONGDESC="X11 is the Windowing system"
 
 PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
+PKG_FIXPYTHON="yes"
 
 # Additional packages we need for using xorg-server:
 # Fonts
