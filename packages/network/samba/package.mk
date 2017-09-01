@@ -31,6 +31,7 @@ PKG_LONGDESC="Samba is a SMB server that runs on Unix and other operating system
 
 PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
+PKG_FIXPYTHON="yes"
 
 PKG_MAKE_OPTS_TARGET="V=1"
 
