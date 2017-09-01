@@ -1,0 +1,34 @@
+#!/bin/bash
+
+################################################################################
+#      This file is part of LibreELEC - https://libreelec.tv
+#      Copyright (C) 2017-present Team LibreELEC
+#
+#  LibreELEC is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  LibreELEC is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with LibreELEC.  If not, see <http://www.gnu.org/licenses/>.
+################################################################################
+
+. config/options $1
+
+if [ ! -f $PKG_BUILD/.python2to3-done ] ; then
+  PYTHON_VER=$(get_pkg_variable Python PKG_INSTALL_VERSION)
+
+  printf "%${BUILD_INDENT}c $(print_color CLR_FIXPYTHON "FIXPYTHON")   $1\n" ' '>&$SILENT_OUT
+  export BUILD_INDENT=$((${BUILD_INDENT:-1}+$BUILD_INDENT_SIZE))
+
+  # Automatically refactor python2 code to python3
+  $TOOLCHAIN/bin/2to3-$PYTHON_VER --processes=$(nproc) --write --nobackups --no-diffs $PKG_BUILD
+  $TOOLCHAIN/lib/python$PYTHON_VER/reindent.py --recurse --nobackup $PKG_BUILD
+
+  touch $PKG_BUILD/.python2to3-done
+fi

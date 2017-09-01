@@ -554,6 +554,7 @@ print_color() {
       CLR_BUILD)        clr_actual="boldyellow";;
       CLR_CLEAN)        clr_actual="boldred";;
       CLR_FIXCONFIG)    clr_actual="boldyellow";;
+      CLR_FIXPYTHON)    clr_actual="boldyellow";;
       CLR_GET)          clr_actual="boldcyan";;
       CLR_INFO)         clr_actual="boldgreen";;
       CLR_INSTALL)      clr_actual="boldgreen";;
