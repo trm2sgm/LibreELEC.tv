@@ -51,7 +51,8 @@ makeinstall_target() {
   find $INSTALL -name SOURCES.txt -exec sed -i "/\/SelfTest\//d;" "{}" \;
 
   # Create Cryptodome as an alternative namespace to Crypto (Kodi addons may use either)
-  ln -sf /usr/lib/python2.7/site-packages/Crypto $INSTALL/usr/lib/python2.7/site-packages/Cryptodome
+  PKG_PYTHON_VERSION=$(get_pkg_variable Python PKG_INSTALL_VERSION)
+  ln -sf /usr/lib/python$PKG_PYTHON_VERSION/site-packages/Crypto $INSTALL/usr/lib/python$PKG_PYTHON_VERSION/site-packages/Cryptodome
 }
 
 post_makeinstall_target() {
