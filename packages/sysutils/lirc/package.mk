@@ -40,6 +40,7 @@ pre_configure_target() {
   export HAVE_WORKING_POLL=yes
   export HAVE_UINPUT=yes
   export PYTHON=:
+  export PYTHON_VERSION=$(get_pkg_variable Python PKG_INSTALL_VERSION)
   if [ -e ${SYSROOT_PREFIX}/usr/include/linux/input-event-codes.h ] ; then
     export DEVINPUT_HEADER=${SYSROOT_PREFIX}/usr/include/linux/input-event-codes.h
   else
