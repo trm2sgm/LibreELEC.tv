@@ -30,6 +30,7 @@ PKG_LONGDESC="distutilscross enhances distutils to support Cross Compile of Pyth
 
 PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
+PKG_FIXPYTHON="yes"
 
 make_host() {
  : # nothing todo
