@@ -30,6 +30,7 @@ PKG_LONGDESC="QEMU is a generic and open source machine emulator and virtualizer
 
 PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
+PKG_FIXPYTHON="yes"
 
 HOST_CONFIGURE_OPTS="--prefix=$TOOLCHAIN \
   --bindir=$TOOLCHAIN/bin \

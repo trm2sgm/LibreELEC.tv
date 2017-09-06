@@ -37,9 +37,11 @@ PKG_CONFIGURE_OPTS_TARGET="--enable-devinput \
                            --without-x"
 
 pre_configure_target() {
+  python_version=$(get_pkg_variable Python PKG_INSTALL_VERSION)
   export HAVE_WORKING_POLL=yes
   export HAVE_UINPUT=yes
   export PYTHON=:
+  export PYTHON_VERSION=${python_version#python}
   if [ -e ${SYSROOT_PREFIX}/usr/include/linux/input-event-codes.h ] ; then
     export DEVINPUT_HEADER=${SYSROOT_PREFIX}/usr/include/linux/input-event-codes.h
   else

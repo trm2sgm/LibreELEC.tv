@@ -32,7 +32,7 @@ PKG_AUTORECONF="no"
 pre_configure_target() {
   export PYTHONXCPREFIX="$SYSROOT_PREFIX/usr"
   export LDSHARED="$CC -shared"
-  export CPPFLAGS="$TARGET_CPPFLAGS -I${SYSROOT_PREFIX}/usr/include/python2.7"
+  export CPPFLAGS="$TARGET_CPPFLAGS -I${SYSROOT_PREFIX}/usr/include/$(get_pkg_variable Python PKG_INSTALL_VERSION)"
 }
 
 make_target() {

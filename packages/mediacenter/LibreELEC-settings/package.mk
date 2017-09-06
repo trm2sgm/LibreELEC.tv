@@ -31,6 +31,7 @@ PKG_LONGDESC="LibreELEC-settings: is a settings dialog for LibreELEC"
 
 PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
+PKG_FIXPYTHON="yes"
 
 PKG_MAKE_OPTS_TARGET="DISTRONAME=$DISTRONAME ROOT_PASSWORD=$ROOT_PASSWORD"
 
@@ -49,11 +50,13 @@ post_makeinstall_target() {
 #      rm -f resources/lib/modules/bluetooth.py
 #    fi
 
-  python -Wi -t -B $TOOLCHAIN/lib/python2.7/compileall.py $INSTALL/usr/share/kodi/addons/service.libreelec.settings/resources/lib/ -f
-  rm -rf `find $INSTALL/usr/share/kodi/addons/service.libreelec.settings/resources/lib/ -name "*.py"`
+  PKG_PYTHON_VERSION=$(get_pkg_variable Python PKG_INSTALL_VERSION)
+  ADDON_INSTALL_DIR=/usr/share/kodi/addons/service.libreelec.settings
+  $TOOLCHAIN/bin/python -Wi -t -B $TOOLCHAIN/lib/$PKG_PYTHON_VERSION/compileall.py -d $ADDON_INSTALL_DIR $INSTALL$ADDON_INSTALL_DIR/resources/lib/ -b -f
+  rm -rf `find $INSTALL$ADDON_INSTALL_DIR/resources/lib/ -name "*.py"`
 
-  python -Wi -t -B $TOOLCHAIN/lib/python2.7/compileall.py $INSTALL/usr/share/kodi/addons/service.libreelec.settings/oe.py -f
-  rm -rf $INSTALL/usr/share/kodi/addons/service.libreelec.settings/oe.py
+  $TOOLCHAIN/bin/python -Wi -t -B $TOOLCHAIN/lib/$PKG_PYTHON_VERSION/compileall.py -d $ADDON_INSTALL_DIR $INSTALL$ADDON_INSTALL_DIR/oe.py -b -f
+  rm -rf $INSTALL$ADDON_INSTALL_DIR/oe.py
 }
 
 post_install() {
