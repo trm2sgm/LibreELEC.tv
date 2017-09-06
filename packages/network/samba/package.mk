@@ -23,7 +23,7 @@ PKG_ARCH="any"
 PKG_LICENSE="GPLv3+"
 PKG_SITE="https://www.samba.org"
 PKG_URL="https://download.samba.org/pub/samba/stable/$PKG_NAME-$PKG_VERSION.tar.gz"
-PKG_DEPENDS_TARGET="toolchain heimdal:host e2fsprogs Python zlib readline popt libaio connman"
+PKG_DEPENDS_TARGET="toolchain heimdal:host e2fsprogs Python2 zlib readline popt libaio connman"
 PKG_NEED_UNPACK="$(get_pkg_directory heimdal) $(get_pkg_directory e2fsprogs)"
 PKG_SECTION="network"
 PKG_SHORTDESC="samba: The free SMB / CIFS fileserver and client"
@@ -31,6 +31,7 @@ PKG_LONGDESC="Samba is a SMB server that runs on Unix and other operating system
 
 PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
+PKG_LEGACY_PYTHON="yes"
 
 PKG_MAKE_OPTS_TARGET="V=1"
 
