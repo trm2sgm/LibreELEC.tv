@@ -45,7 +45,7 @@ makeinstall_target() {
 }
 
 post_makeinstall_target() {
-  find $INSTALL/usr/lib -name "*.py" -exec rm -rf "{}" ";"
+  python_cleanup $INSTALL/usr/lib
 
   rm -rf $INSTALL/usr/bin
 }

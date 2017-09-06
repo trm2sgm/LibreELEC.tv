@@ -158,6 +158,31 @@ tolower() {
   echo "$@" | tr ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz
 }
 
+python_cleanup() {
+  local python_version dname bname f mtime
+
+  python_version=$(get_pkg_variable Python PKG_INSTALL_VERSION)
+  python_version=${python_version#python}
+  python_version=${python_version//./}
+
+  while IFS= read -r f; do
+    dname=$(dirname $f)
+    bname=$(basename $f .py)
+    mtime=$(stat -c%Y $f)
+
+    # cache pyc must exist
+    if ls ${dname}/__pycache__/${bname}.cpython-${python_version}.opt-?.pyc &>/dev/null; then
+      rm -f $f
+      touch --date=@${mtime} $f
+    elif [[ -f ${dname}/__pycache__/${bname}.cpython-${python_version}.pyc ]]; then
+      rm -f $f
+      touch --date=@${mtime} $f
+    elif [ -f ${dname}/${bname}.pyc ]; then
+      rm -f $f
+    fi
+  done <<< "$(find $1 -name '*.py')"
+}
+
 require_eglibc() {
   if [ "$TARGET_LIBC" != eglibc ]; then
     echo "$1 requires eglibc, aborting."

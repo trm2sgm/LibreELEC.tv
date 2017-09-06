@@ -33,7 +33,7 @@ make_target() {
 
 makeinstall_target() {
   python setup.py install --root=$INSTALL --prefix=/usr
-  find $INSTALL/usr/lib -name "*.py" -exec rm -rf "{}" ";"
+  python_cleanup $INSTALL/usr/lib
   rm -rf $INSTALL/usr/lib/python*/site-packages/*.egg-info \
          $INSTALL/usr/lib/python*/site-packages/*/tests
 }

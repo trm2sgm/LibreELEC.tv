@@ -38,7 +38,7 @@ pre_configure_target() {
 }
 
 post_makeinstall_target() {
-  find $INSTALL/usr/lib -name "*.py" -exec rm -rf "{}" ";"
+  python_cleanup $INSTALL/usr/lib
 
   rm -rf $INSTALL/usr/bin
   rm -rf $INSTALL/usr/share/pygobject

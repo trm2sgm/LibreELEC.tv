@@ -52,11 +52,11 @@ post_makeinstall_target() {
 
   PKG_PYTHON_VERSION=$(get_pkg_variable Python PKG_INSTALL_VERSION)
   ADDON_INSTALL_DIR=/usr/share/kodi/addons/service.libreelec.settings
-  $TOOLCHAIN/bin/python -Wi -t -B $TOOLCHAIN/lib/$PKG_PYTHON_VERSION/compileall.py -d $ADDON_INSTALL_DIR $INSTALL$ADDON_INSTALL_DIR/resources/lib/ -b -f
-  rm -rf `find $INSTALL$ADDON_INSTALL_DIR/resources/lib/ -name "*.py"`
+  $TOOLCHAIN/bin/python -Wi -t -B $TOOLCHAIN/lib/$PKG_PYTHON_VERSION/compileall.py -d $ADDON_INSTALL_DIR $INSTALL$ADDON_INSTALL_DIR/resources/lib/ -f
+  python_cleanup $INSTALL$ADDON_INSTALL_DIR/resources/lib
 
-  $TOOLCHAIN/bin/python -Wi -t -B $TOOLCHAIN/lib/$PKG_PYTHON_VERSION/compileall.py -d $ADDON_INSTALL_DIR $INSTALL$ADDON_INSTALL_DIR/oe.py -b -f
-  rm -rf $INSTALL$ADDON_INSTALL_DIR/oe.py
+  $TOOLCHAIN/bin/python -Wi -t -B $TOOLCHAIN/lib/$PKG_PYTHON_VERSION/compileall.py -d $ADDON_INSTALL_DIR $INSTALL$ADDON_INSTALL_DIR/oe.py -f
+  python_cleanup $INSTALL$ADDON_INSTALL_DIR/oe.py
 }
 
 post_install() {
