@@ -1,0 +1,27 @@
+From e6d184cf56b9a06e6eb3a63b32787c82b83c104b Mon Sep 17 00:00:00 2001
+From: MilhouseVH <milhouseVH.github@nmacleod.com>
+Date: Sun, 3 Sep 2017 23:58:42 +0100
+Subject: [PATCH] import: don't consider read-only files on /usr/* to be stale
+
+We ship compiled pyc files and in order to save space we
+replace the source code files with zero bytes files. Thanks, PEP-3147.
+---
+ Lib/importlib/_bootstrap_external.py | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/Lib/importlib/_bootstrap_external.py b/Lib/importlib/_bootstrap_external.py
+index 3550013..0fedb5c 100644
+--- a/Lib/importlib/_bootstrap_external.py
++++ b/Lib/importlib/_bootstrap_external.py
+@@ -433,6 +433,8 @@ def _validate_bytecode_header(data, source_stats=None, name=None, path=None):
+         message = 'reached EOF while reading size of source in {!r}'.format(name)
+         _bootstrap._verbose_message('{}', message)
+         raise EOFError(message)
++    if path is not None and path.startswith('/usr/'):
++      return data[12:]
+     if source_stats is not None:
+         try:
+             source_mtime = int(source_stats['mtime'])
+-- 
+2.7.4
+
