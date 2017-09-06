@@ -16,21 +16,25 @@
 #  along with OpenELEC.  If not, see <http://www.gnu.org/licenses/>.
 ################################################################################
 
-PKG_NAME="Python"
+PKG_NAME="Python2"
 PKG_VERSION="2.7.13"
 PKG_SHA256="35d543986882f78261f97787fd3e06274bfa6df29fac9b4a94f73930ff98f731"
 PKG_ARCH="any"
 PKG_LICENSE="OSS"
 PKG_SITE="http://www.python.org/"
-PKG_URL="http://www.python.org/ftp/python/$PKG_VERSION/$PKG_NAME-$PKG_VERSION.tar.xz"
+PKG_URL="http://www.python.org/ftp/python/$PKG_VERSION/${PKG_NAME::-1}-$PKG_VERSION.tar.xz"
+PKG_SOURCE_DIR="${PKG_NAME::-1}-$PKG_VERSION*"
 PKG_DEPENDS_HOST="zlib:host bzip2:host sqlite:host"
-PKG_DEPENDS_TARGET="toolchain sqlite expat zlib bzip2 openssl libffi Python:host"
+PKG_DEPENDS_TARGET="toolchain sqlite expat zlib bzip2 openssl libffi Python2:host"
 PKG_SECTION="lang"
 PKG_SHORTDESC="python: The Python programming language"
 PKG_LONGDESC="Python is an interpreted object-oriented programming language, and is often compared with Tcl, Perl, Java or Scheme."
 
+PKG_INSTALL_VERSION=python2.7
+
 PKG_IS_ADDON="no"
 PKG_AUTORECONF="yes"
+PKG_LEGACY_PYTHON="yes"
 
 PY_DISABLED_MODULES="_tkinter nis gdbm bsddb ossaudiodev"
 
@@ -85,10 +89,14 @@ makeinstall_host() {
        PYTHON_MODULES_LIB="$HOST_LIBDIR" \
        PYTHON_DISABLE_MODULES="readline _curses _curses_panel $PY_DISABLED_MODULES" \
        install
+
+  rm -fr $TOOLCHAIN/bin/python*-config
+
+  (cd $ROOT && $SCRIPTS/switch_python $PKG_NAME)
 }
 
 pre_configure_target() {
-  export PYTHON_FOR_BUILD=$TOOLCHAIN/bin/python
+  export PYTHON_FOR_BUILD=$TOOLCHAIN/bin/python2
 }
 
 make_target() {
@@ -104,32 +112,10 @@ makeinstall_target() {
         PYTHON_MODULES_INCLUDE="$TARGET_INCDIR" \
         PYTHON_MODULES_LIB="$TARGET_LIBDIR" \
         install
-
-  make  -j1 CC="$CC" DESTDIR=$INSTALL \
-        PYTHON_DISABLE_MODULES="$PY_DISABLED_MODULES" \
-        PYTHON_MODULES_INCLUDE="$TARGET_INCDIR" \
-        PYTHON_MODULES_LIB="$TARGET_LIBDIR" \
-        install
 }
 
 post_makeinstall_target() {
-  EXCLUDE_DIRS="bsddb idlelib lib-tk lib2to3 msilib pydoc_data test unittest"
-  for dir in $EXCLUDE_DIRS; do
-    rm -rf $INSTALL/usr/lib/python*/$dir
-  done
+  rm -rf $INSTALL/usr
 
-  rm -rf $INSTALL/usr/lib/python*/config
-  rm -rf $INSTALL/usr/bin/2to3
-  rm -rf $INSTALL/usr/bin/idle
-  rm -rf $INSTALL/usr/bin/pydoc
-  rm -rf $INSTALL/usr/bin/smtpd.py
-  rm -rf $INSTALL/usr/bin/python*-config
-
-  cd $INSTALL/usr/lib/python2.7
-  python -Wi -t -B $PKG_BUILD/Lib/compileall.py -d /usr/lib/python2.7 -f .
-  find $INSTALL/usr/lib/python2.7 -name "*.py" -exec rm -f {} \; &>/dev/null
-
-  # strip
-  chmod u+w $INSTALL/usr/lib/libpython*.so.*
-  debug_strip $INSTALL/usr
+  (cd $ROOT && $SCRIPTS/switch_python $PKG_NAME)
 }
