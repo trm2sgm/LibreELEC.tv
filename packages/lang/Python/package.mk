@@ -108,6 +108,11 @@ post_unpack() {
     touch $PKG_BUILD/Python/graminit.c
 }
 
+# Any patched py files must be regenerated into frozen code
+post_make_host() {
+  make regen-all
+}
+
 post_makeinstall_host() {
   rm -f $TOOLCHAIN/bin/python*-config
   rm -f $TOOLCHAIN/bin/smtpd.py*
