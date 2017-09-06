@@ -1,0 +1,61 @@
+From 1d555708c72996068ceb4ac71260c501e210344d Mon Sep 17 00:00:00 2001
+From: MilhouseVH <milhouseVH.github@nmacleod.com>
+Date: Tue, 5 Sep 2017 19:12:22 +0100
+Subject: [PATCH 1/2] python3 fixup: Address python3 incompatibility in Linux
+ Install.cmake script
+
+---
+ cmake/scripts/linux/Install.cmake | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/cmake/scripts/linux/Install.cmake b/cmake/scripts/linux/Install.cmake
+index 7a2705be1804..66c092285bf2 100644
+--- a/cmake/scripts/linux/Install.cmake
++++ b/cmake/scripts/linux/Install.cmake
+@@ -178,7 +178,7 @@ install(FILES ${CMAKE_BINARY_DIR}/${CORE_BUILD_DIR}/scripts/${APP_NAME}Config.cm
+         COMPONENT kodi-addon-dev)
+ 
+ if(ENABLE_EVENTCLIENTS)
+-  execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(prefix='')"
++  execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(prefix=''))"
+                   OUTPUT_VARIABLE PYTHON_LIB_PATH OUTPUT_STRIP_TRAILING_WHITESPACE)
+   # Install kodi-eventclients-common BT python files
+   install(PROGRAMS ${CMAKE_SOURCE_DIR}/tools/EventClients/lib/python/bt/__init__.py
+
+From 78443d853eea4bc907a8f55f0f9a15e517b356ff Mon Sep 17 00:00:00 2001
+From: MilhouseVH <milhouseVH.github@nmacleod.com>
+Date: Tue, 5 Sep 2017 19:12:49 +0100
+Subject: [PATCH 2/2] python3 fixup: Address python3 incompatibility in
+ samba-gplv3/autotools41.patch
+
+---
+ tools/depends/target/samba-gplv3/autotools41.patch | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/tools/depends/target/samba-gplv3/autotools41.patch b/tools/depends/target/samba-gplv3/autotools41.patch
+index 02816b062a74..c070a139442d 100644
+--- a/tools/depends/target/samba-gplv3/autotools41.patch
++++ b/tools/depends/target/samba-gplv3/autotools41.patch
+@@ -10360,18 +10360,18 @@ index 0000000..66dadbd
+ +	if test x$PYTHON != x
+ +	then
+ +		DISTUTILS_CFLAGS=`$PYTHON -c "from distutils import sysconfig; \
+-+					      print '-I%s -I%s %s' % ( \
+++					      print('-I%s -I%s %s' % ( \
+ +							sysconfig.get_python_inc(), \
+ +							sysconfig.get_python_inc(plat_specific=1), \
+-+							sysconfig.get_config_var('CFLAGS'))"`
+++							sysconfig.get_config_var('CFLAGS')))"`
+ +		DISTUTILS_LDFLAGS=`$PYTHON -c "from distutils import sysconfig; \
+-+					       print '%s %s -lpython%s -L%s %s -L%s' % ( \
+++					       print('%s %s -lpython%s -L%s %s -L%s' % ( \
+ +							sysconfig.get_config_var('LIBS'), \
+ +							sysconfig.get_config_var('SYSLIBS'), \
+ +							sysconfig.get_config_var('VERSION'), \
+ +							sysconfig.get_config_var('LIBDIR'), \
+ +							sysconfig.get_config_var('LDFLAGS'), \
+-+							sysconfig.get_config_var('LIBPL'))"`
+++							sysconfig.get_config_var('LIBPL')))"`
+ +		TRY_LINK_PYTHON($DISTUTILS_LDFLAGS, $DISTUTILS_CFLAGS)
+ +
+ +		if `$PYTHON -c "import sys; sys.exit(sys.version_info.__getslice__(0, 2) >= (2, 5))"`
