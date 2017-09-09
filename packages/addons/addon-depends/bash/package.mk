@@ -17,12 +17,12 @@
 ################################################################################
 
 PKG_NAME="bash"
-PKG_VERSION="4.3.46"
-PKG_SHA256="fc7131bbc3139db143ec9fe03fd4e6bd3636bdf53e6956065b261f034b6af74b"
+PKG_VERSION="4.4"
+PKG_SHA256="d86b3392c1202e8ff5a423b302e6284db7f8f435ea9f39b5b1b20fd3ac36dfcb"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="http://www.gnu.org/software/bash/bash.html"
-PKG_URL="ftp://ftp.cwru.edu/pub/$PKG_NAME/$PKG_NAME-$PKG_VERSION.tar.gz"
+PKG_URL="https://ftp.gnu.org/gnu/bash/$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_DEPENDS_TARGET="toolchain ncurses"
 PKG_SECTION="devel"
 PKG_SHORTDESC="The GNU Bourne Again shell"
