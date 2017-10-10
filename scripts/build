@@ -238,6 +238,9 @@ if [ "$PKG_SECTION" = "virtual" ]; then
   exit 0
 fi
 
+# Don't need to block if this package is not in SERIAL_BUILD_PACKAGES list
+listcontains "${SERIAL_BUILD_PACKAGES}" "${PACKAGE_NAME}" && $SCRIPTS/do_build_block add "${PACKAGE_NAME}" "${SERIAL_BUILD_PACKAGES_LIMIT}"
+
 # configure other variables
 if [ "$TARGET" = "target" ]; then
   INSTALL=$PKG_BUILD/.install_pkg
@@ -562,3 +565,5 @@ done
 if [ "$1" = "u-boot" ]; then
   echo "STAMP_UBOOT_SYSTEM=\"${UBOOT_SYSTEM}\"" >> $STAMP
 fi
+
+listcontains "${SERIAL_BUILD_PACKAGES}" "${PACKAGE_NAME}" && $SCRIPTS/do_build_block del "${PACKAGE_NAME}" "${SERIAL_BUILD_PACKAGES_LIMIT}" || true
