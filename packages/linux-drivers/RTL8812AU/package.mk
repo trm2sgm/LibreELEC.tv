@@ -37,7 +37,15 @@ pre_make_target() {
 }
 
 make_target() {
+  # build RTL8812AU driver (default)
   make V=1 \
+       ARCH=$TARGET_KERNEL_ARCH \
+       KSRC=$(kernel_path) \
+       CROSS_COMPILE=$TARGET_PREFIX \
+       CONFIG_POWER_SAVING=n
+
+  # build RTL8814AU driver
+  make V=1 RTL8814=1 \
        ARCH=$TARGET_KERNEL_ARCH \
        KSRC=$(kernel_path) \
        CROSS_COMPILE=$TARGET_PREFIX \
