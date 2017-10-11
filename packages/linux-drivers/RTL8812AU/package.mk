@@ -17,12 +17,12 @@
 ################################################################################
 
 PKG_NAME="RTL8812AU"
-PKG_VERSION="8e7ccba"
-PKG_SHA256="9caf7db8cca8ae74fc2daa4c522a92a0648a55ee3958cf48424e1dbe7074e240"
+PKG_VERSION="28cb565"
+PKG_SHA256="fd389f075f1f7d84b5912aeff7a4f08c7818b72040afabb1b2dc459bdc468513"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
-PKG_SITE="https://github.com/paspro/rtl8812au"
-PKG_URL="https://github.com/paspro/rtl8812au/archive/$PKG_VERSION.tar.gz"
+PKG_SITE="https://github.com/aircrack-ng/rtl8812au"
+PKG_URL="https://github.com/aircrack-ng/rtl8812au/archive/$PKG_VERSION.tar.gz"
 PKG_SOURCE_DIR="rtl8812au-$PKG_VERSION*"
 PKG_DEPENDS_TARGET="toolchain linux"
 PKG_NEED_UNPACK="$LINUX_DEPENDS"
