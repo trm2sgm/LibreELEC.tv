@@ -66,9 +66,10 @@ case "$LINUX" in
     PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET imx6-status-led imx6-soc-fan irqbalanced"
     ;;
   *)
-    PKG_VERSION="4.13.12"
-    PKG_SHA256="bf98065bf0e3aa5af379d0808f157be48ca4e452a55468fc4ce814b17cf9de74"
-    PKG_URL="https://www.kernel.org/pub/linux/kernel/v4.x/$PKG_NAME-$PKG_VERSION.tar.xz"
+    PKG_VERSION="0dc48f1f"
+    PKG_SHA256="f4112bc44eb935ec2051e6db088bd7750f3d44d5d8b4750e31488798a7c8490a"
+    PKG_URL="http://cgit.freedesktop.org/drm-tip/snapshot/drm-tip-$PKG_VERSION.tar.gz"
+    PKG_SOURCE_DIR="drm-tip-*"
     PKG_PATCH_DIRS="default"
     ;;
 esac
