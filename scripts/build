@@ -182,6 +182,9 @@ if [ ! -f $STAMP ]; then
       done
     fi
 
+    # Don't need to block if this package is not in SERIAL_BUILD_PACKAGES list
+    listcontains "${SERIAL_BUILD_PACKAGES}" "${PACKAGE_NAME}" && $SCRIPTS/do_build_block add "${PACKAGE_NAME}" "${SERIAL_BUILD_PACKAGES_LIMIT}"
+
     printf "%${BUILD_INDENT}c ${boldyellow}BUILD${endcolor}    $PACKAGE_NAME ${boldwhite}($TARGET)${endcolor}\n" ' '>&$SILENT_OUT
     export BUILD_INDENT=$((${BUILD_INDENT:-1}+$BUILD_INDENT_SIZE))
 
@@ -381,6 +384,8 @@ if [ ! -f $STAMP ]; then
 
       cd $ROOT
     fi  # ! "$PKG_SECTION" = "virtual"
+
+    listcontains "${SERIAL_BUILD_PACKAGES}" "${PACKAGE_NAME}" && $SCRIPTS/do_build_block del "${PACKAGE_NAME}" "${SERIAL_BUILD_PACKAGES_LIMIT}" 
 
     for i in `find $SYSROOT_PREFIX/usr/lib/ -name "*.la" 2>/dev/null`; do \
       $SED "s:\(['= ]\)/usr:\\1$SYSROOT_PREFIX/usr:g" $i; \
