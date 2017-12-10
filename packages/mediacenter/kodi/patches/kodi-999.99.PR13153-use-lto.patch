@@ -1,0 +1,73 @@
+From a0daf6a902ee3d924ca548eb9453b924325b605c Mon Sep 17 00:00:00 2001
+From: wsnipex <wsnipex@a1.net>
+Date: Fri, 8 Dec 2017 20:57:20 +0100
+Subject: [PATCH] [cmake] linux: add option to enable link time optimization
+
+---
+ CMakeLists.txt                      |  6 ++++++
+ cmake/scripts/linux/ArchSetup.cmake | 27 +++++++++++++++++++++++++--
+ 2 files changed, 31 insertions(+), 2 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 6b77477b944a..6b6020840f71 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,6 +1,11 @@
+ cmake_minimum_required(VERSION 3.1)
+ project(kodi LANGUAGES CXX C ASM)
+ 
++if(POLICY CMP0069)
++  set(CMAKE_POLICY_DEFAULT_CMP0069 NEW)
++  cmake_policy(SET CMP0069 NEW)
++endif()
++
+ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
+ if(DEPENDS_DIR)
+   list(APPEND CMAKE_PREFIX_PATH ${DEPENDS_DIR})
+@@ -464,6 +469,7 @@ if(VERBOSE)
+   message(STATUS "CMAKE_C_FLAGS         : ${CMAKE_C_FLAGS}")
+   message(STATUS "CMAKE_CXX_FLAGS       : ${CMAKE_CXX_FLAGS}")
+   message(STATUS "CMAKE_EXE_LINKER_FLAGS: ${CMAKE_EXE_LINKER_FLAGS}")
++  message(STATUS "LTO_OPTIMIZATION:     : ${CMAKE_INTERPROCEDURAL_OPTIMIZATION}")
+   message(STATUS "#---------------------------------------------#")
+   message(STATUS "bindir     : ${bindir}")
+   message(STATUS "includedir : ${includedir}")
+diff --git a/cmake/scripts/linux/ArchSetup.cmake b/cmake/scripts/linux/ArchSetup.cmake
+index fb350f88f9b7..3764fbda3745 100644
+--- a/cmake/scripts/linux/ArchSetup.cmake
++++ b/cmake/scripts/linux/ArchSetup.cmake
+@@ -37,9 +37,32 @@ else()
+   endif()
+ endif()
+ 
+-# Make sure we strip binaries in Release build
+-if(CMAKE_BUILD_TYPE STREQUAL Release AND CMAKE_COMPILER_IS_GNUCXX)
++if((CMAKE_BUILD_TYPE STREQUAL Release OR CMAKE_BUILD_TYPE STREQUAL MinSizeRel)
++    AND CMAKE_COMPILER_IS_GNUCXX)
++  # Make sure we strip binaries in Release build
+   set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -s")
++
++  # LTO Support, requires cmake >= 3.9
++  if(CMAKE_VERSION VERSION_EQUAL 3.9.0 OR CMAKE_VERSION VERSION_GREATER 3.9.0)
++    option(USE_LTO "Enable link time optimization. Specify an int for number of parallel jobs" OFF)
++    if(USE_LTO)
++      include(CheckIPOSupported)
++      check_ipo_supported(RESULT HAVE_LTO OUTPUT _output)
++      if(HAVE_LTO)
++        set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
++        # override flags to enable parallel processing
++        set(NJOBS 2)
++        if(USE_LTO MATCHES "^[0-9]+$")
++          set(NJOBS ${USE_LTO})
++        endif()
++        set(CMAKE_CXX_COMPILE_OPTIONS_IPO -flto=${NJOBS} -fno-fat-lto-objects)
++        set(CMAKE_C_COMPILE_OPTIONS_IPO -flto=${NJOBS} -fno-fat-lto-objects)
++      else()
++        message(WARNING "LTO optimization not supported: ${_output}")
++        unset(_output)
++      endif()
++    endif()
++  endif()
+ endif()
+ 
+ if(KODI_DEPENDSBUILD)
