@@ -47,8 +47,8 @@ case "$LINUX" in
     PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET aml-dtbtools:host"
     ;;
   *)
-    PKG_VERSION="4.15-rc7"
-    PKG_SHA256="703606d4477f22d58c519766992a33c6590e902d8d95b58fac023156be5603de"
+    PKG_VERSION="4.15-rc8"
+    PKG_SHA256="03571c3b2701b393c5b2530ed16d2b90fa413dc09a140a96d06eba7ac822a295"
     PKG_URL="https://git.kernel.org/torvalds/t/$PKG_NAME-$PKG_VERSION.tar.gz"
     PKG_PATCH_DIRS="default"
     ;;
