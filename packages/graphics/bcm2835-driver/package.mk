@@ -17,8 +17,8 @@
 ################################################################################
 
 PKG_NAME="bcm2835-driver"
-PKG_VERSION="5e55ff0"
-PKG_SHA256="05b2d417e79e0629003d349d280a4b28f79aa6a312a0d53b05ec5b868b1e405b"
+PKG_VERSION="80e1fbe"
+PKG_SHA256="9df27431dd5e4c583e3ae8a902488f5dd9b11b584d9261f7b16f1c6753c4c768"
 PKG_ARCH="any"
 PKG_LICENSE="nonfree"
 PKG_SITE="http://www.broadcom.com"
